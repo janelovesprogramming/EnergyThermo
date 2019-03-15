@@ -1,0 +1,5 @@
+C:\Users\Игорь\Desktop\ShapeEditorTest\ShapeEditorLibrary\bin\Debug\ShapeEditorLibrary.dll
+C:\Users\Игорь\Desktop\ShapeEditorTest\ShapeEditorLibrary\bin\Debug\ShapeEditorLibrary.pdb
+C:\Users\Игорь\Desktop\ShapeEditorTest\ShapeEditorLibrary\obj\Debug\ShapeEditorLibrary.csprojResolveAssemblyReference.cache
+C:\Users\Игорь\Desktop\ShapeEditorTest\ShapeEditorLibrary\obj\Debug\ShapeEditorLibrary.dll
+C:\Users\Игорь\Desktop\ShapeEditorTest\ShapeEditorLibrary\obj\Debug\ShapeEditorLibrary.pdb
