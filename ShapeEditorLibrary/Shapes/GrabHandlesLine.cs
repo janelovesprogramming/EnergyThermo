@@ -7,142 +7,213 @@ using System.Windows.Forms;
 
 namespace ShapeEditorLibrary.Shapes
 {
-    
-        public class GrabHandlesLine
+
+    public class GrabHandlesLine
+    {
+        public const int BOX_SIZE = 4;
+
+        public GrabHandlesLine(Shape parentShape)
         {
-            public const int BOX_SIZE = 3;
+            this.BorderWidth = 3;
+            this.SetBounds(parentShape.Bounds);
+        }
 
-            public GrabHandlesLine(Shape parentShape)
+        #region Properties
+
+        public Rectangle BorderBounds { get; private set; }
+        public int BorderWidth { get; set; }
+        public bool Locked { get; set; }
+
+        public Rectangle TotalBounds
+        {
+            get { return Rectangle.Union(this.TopLeft, this.BottomRight); }
+        }
+
+        #region Resize Handles
+
+        internal Rectangle TopLeft
+        {
+            get
             {
-                this.BorderWidth = 4;
-                this.SetBounds(parentShape.Bounds);
+                return new Rectangle(this.BorderBounds.X - BOX_SIZE,
+                                     this.BorderBounds.Y - BOX_SIZE,
+                                     2 * BOX_SIZE + 1, 2 * BOX_SIZE + 1);
             }
+        }
 
-            #region Properties
-
-            public Rectangle BorderBounds { get; private set; }
-            public int BorderWidth { get; set; }
-            public bool Locked { get; set; }
-
-            public Rectangle TotalBounds
+        internal Rectangle TopRight
+        {
+            get
             {
-                get { return Rectangle.Union(this.TopLeft, this.BottomRight); }
+                return new Rectangle(this.BorderBounds.Right - BOX_SIZE,
+                                     this.BorderBounds.Y - BOX_SIZE,
+                                     2 * BOX_SIZE + 1, 2 * BOX_SIZE + 1);
             }
+        }
 
-            #region Resize Handles
-
-            internal Rectangle TopLeft
+        internal Rectangle TopMiddle
+        {
+            get
             {
-                get
-                {
-                    return new Rectangle(this.BorderBounds.X - BOX_SIZE,
-                                         this.BorderBounds.Y - BOX_SIZE,
-                                         2 * BOX_SIZE + 1, 2 * BOX_SIZE + 1);
-                }
+                return new Rectangle(this.BorderBounds.X + this.BorderBounds.Width / 2 - BOX_SIZE,
+                                     this.BorderBounds.Y - BOX_SIZE,
+                                     2 * BOX_SIZE + 1, 2 * BOX_SIZE + 1);
             }
+        }
 
-          
-          
-            internal Rectangle BottomRight
+        internal Rectangle MiddleLeft
+        {
+            get
             {
-                get
-                {
-                    return new Rectangle(this.BorderBounds.Right - BOX_SIZE,
-                                         this.BorderBounds.Bottom - BOX_SIZE,
-                                         2 * BOX_SIZE + 1, 2 * BOX_SIZE + 1);
-                }
+                return new Rectangle(this.BorderBounds.X - BOX_SIZE,
+                                     this.BorderBounds.Y + this.BorderBounds.Height / 2 - BOX_SIZE,
+                                     2 * BOX_SIZE + 1, 2 * BOX_SIZE + 1);
             }
+        }
 
-          
-
-            #endregion
-
-            #endregion
-
-            #region Methods
-
-            internal void SetBounds(Rectangle shapeBounds)
+        internal Rectangle MiddleRight
+        {
+            get
             {
-                this.BorderBounds = new Rectangle(shapeBounds.X - this.BorderWidth,
-                                                  shapeBounds.Y - this.BorderWidth,
-                                                  shapeBounds.Width + 2 * this.BorderWidth,
-                                                  shapeBounds.Height + 2 * this.BorderWidth);
+                return new Rectangle(this.BorderBounds.Right - BOX_SIZE,
+                                     this.BorderBounds.Y + this.BorderBounds.Height / 2 - BOX_SIZE,
+                                     2 * BOX_SIZE + 1, 2 * BOX_SIZE + 1);
             }
+        }
 
-            internal void Draw(Graphics g, bool firstSelection)
+        internal Rectangle MiddleMiddle
+        {
+            get
             {
-                ControlPaint.DrawBorder(g, this.BorderBounds, ControlPaint.ContrastControlDark, ButtonBorderStyle.Dotted);
-
-                if (this.Locked)
-                {
-                    this.DrawLock(g);
-                }
-                else
-                {
-                    this.DrawGrabHandle(g, this.TopLeft, firstSelection);
-                    
-                    this.DrawGrabHandle(g, this.BottomRight, firstSelection);
-                }
+                return new Rectangle(this.BorderBounds.X + this.BorderBounds.Width / 2 - BOX_SIZE,
+                                     this.BorderBounds.Y + this.BorderBounds.Height / 2 - BOX_SIZE,
+                                     2 * BOX_SIZE + 1, 2 * BOX_SIZE + 1);
             }
+        }
 
-            private void DrawGrabHandle(Graphics g, Rectangle rect, bool firstSelection)
+        internal Rectangle BottomLeft
+        {
+            get
             {
-                if (firstSelection)
-                {
-                    var rect1 = rect;
-                    var rect2 = rect;
-                    var innerRect = rect;
-                    innerRect.Inflate(-1, -1);
-                    rect1.X += 1;
-                    rect1.Width -= 2;
-                    rect2.Y += 1;
-                    rect2.Height -= 2;
-
-                    g.FillRectangle(Brushes.Black, rect1);
-                    g.FillRectangle(Brushes.Black, rect2);
-                    g.FillRectangle(Brushes.White, innerRect);
-                }
-                else
-                {
-                    g.FillRectangle(Brushes.Black, rect);
-                }
+                return new Rectangle(this.BorderBounds.X - BOX_SIZE,
+                                     this.BorderBounds.Bottom - BOX_SIZE,
+                                     2 * BOX_SIZE + 1, 2 * BOX_SIZE + 1);
             }
+        }
 
-            private void DrawLock(Graphics g)
+        internal Rectangle BottomRight
+        {
+            get
             {
-                var rect = this.TopLeft;
-                rect.X -= 1;
-                rect.Width -= 1;
-                rect.Height -= 2;
+                return new Rectangle(this.BorderBounds.Right - BOX_SIZE,
+                                     this.BorderBounds.Bottom - BOX_SIZE,
+                                     2 * BOX_SIZE + 1, 2 * BOX_SIZE + 1);
+            }
+        }
 
+        internal Rectangle BottomMiddle
+        {
+            get
+            {
+                return new Rectangle(this.BorderBounds.X + this.BorderBounds.Width / 2 - BOX_SIZE,
+                                     this.BorderBounds.Bottom - BOX_SIZE,
+                                     2 * BOX_SIZE + 1, 2 * BOX_SIZE + 1);
+            }
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Methods
+
+        internal void SetBounds(Rectangle shapeBounds)
+        {
+            this.BorderBounds = new Rectangle(shapeBounds.X - this.BorderWidth,
+                                              shapeBounds.Y - this.BorderWidth,
+                                              shapeBounds.Width + 2 * this.BorderWidth,
+                                              shapeBounds.Height + 2 * this.BorderWidth);
+        }
+
+        internal void Draw(Graphics g, bool firstSelection)
+        {
+            ControlPaint.DrawBorder(g, this.BorderBounds, ControlPaint.ContrastControlDark, ButtonBorderStyle.Dotted);
+
+            if (this.Locked)
+            {
+                this.DrawLock(g);
+            }
+            else
+            {
+                this.DrawGrabHandle(g, this.TopLeft, firstSelection);
+                this.DrawGrabHandle(g, this.TopMiddle, firstSelection);
+                this.DrawGrabHandle(g, this.TopRight, firstSelection);
+                this.DrawGrabHandle(g, this.MiddleLeft, firstSelection);
+                this.DrawGrabHandle(g, this.MiddleRight, firstSelection);
+                this.DrawGrabHandle(g, this.BottomLeft, firstSelection);
+                this.DrawGrabHandle(g, this.BottomMiddle, firstSelection);
+                this.DrawGrabHandle(g, this.BottomRight, firstSelection);
+            }
+        }
+
+        private void DrawGrabHandle(Graphics g, Rectangle rect, bool firstSelection)
+        {
+            if (firstSelection)
+            {
+                var rect1 = rect;
+                var rect2 = rect;
                 var innerRect = rect;
                 innerRect.Inflate(-1, -1);
+                rect1.X += 1;
+                rect1.Width -= 2;
+                rect2.Y += 1;
+                rect2.Height -= 2;
 
-                g.FillRectangle(Brushes.White, innerRect);
-                g.DrawRectangle(Pens.Black, rect);
-
-                var outerHandleRect1 = rect;
-                outerHandleRect1.Y -= 2;
-                outerHandleRect1.Height = 2;
-                outerHandleRect1.Width = 5;
-                outerHandleRect1.X += 1;
-
-                var outerHandleRect2 = outerHandleRect1;
-                outerHandleRect2.Y -= 1;
-                outerHandleRect2.X += 1;
-                outerHandleRect2.Width = 3;
-                outerHandleRect2.Height = 1;
-
-                var innerHandleRect = outerHandleRect1;
-                innerHandleRect.X += 1;
-                innerHandleRect.Width = 3;
-
-                g.FillRectangle(Brushes.Black, outerHandleRect1);
-                g.FillRectangle(Brushes.Black, outerHandleRect2);
-                g.FillRectangle(Brushes.White, innerHandleRect);
+                //g.FillRectangle(Brushes.Black, rect1);
+                //g.FillRectangle(Brushes.Black, rect2);
+                //g.FillRectangle(Brushes.White, innerRect);
             }
-
-            #endregion
+            else
+            {
+                //g.FillRectangle(Brushes.Black, rect);
+            }
         }
+
+        private void DrawLock(Graphics g)
+        {
+            var rect = this.TopLeft;
+            rect.X -= 1;
+            rect.Width -= 1;
+            rect.Height -= 2;
+
+            var innerRect = rect;
+            innerRect.Inflate(-1, -1);
+
+            //g.FillRectangle(Brushes.White, innerRect);
+            //g.DrawRectangle(Pens.Black, rect);
+
+            var outerHandleRect1 = rect;
+            outerHandleRect1.Y -= 2;
+            outerHandleRect1.Height = 2;
+            outerHandleRect1.Width = 5;
+            outerHandleRect1.X += 1;
+
+            var outerHandleRect2 = outerHandleRect1;
+            outerHandleRect2.Y -= 1;
+            outerHandleRect2.X += 1;
+            outerHandleRect2.Width = 3;
+            outerHandleRect2.Height = 1;
+
+            var innerHandleRect = outerHandleRect1;
+            innerHandleRect.X += 1;
+            innerHandleRect.Width = 3;
+
+            //g.FillRectangle(Brushes.Black, outerHandleRect1);
+            //g.FillRectangle(Brushes.Black, outerHandleRect2);
+            //g.FillRectangle(Brushes.White, innerHandleRect);
+        }
+
+        #endregion
     }
+}
 

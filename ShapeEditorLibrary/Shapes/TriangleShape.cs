@@ -8,6 +8,10 @@ namespace ShapeEditorLibrary.Shapes
             : base(location)
         {
         }
+        public override string GetShapeTypeName()
+        {
+            return "TriangleShape";
+        }
 
         public override void Draw(System.Drawing.Graphics g)
         {
@@ -17,7 +21,7 @@ namespace ShapeEditorLibrary.Shapes
             PointF right = new PointF(this.Bounds.Right, this.Bounds.Bottom);
             PointF top = new PointF(middle, this.Bounds.Top);
 
-            using (var b = new SolidBrush(this.BackColor))
+            using (var b = new SolidBrush(Color.Black))
             {
                 g.FillPolygon(b, new PointF[] { left, right, top });
             }

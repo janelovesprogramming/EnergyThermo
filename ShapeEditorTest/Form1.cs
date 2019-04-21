@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using ShapeEditorLibrary.Shapes;
+using ShapeEditorLibrary;
 
 namespace ShapeEditorTest
 {
@@ -99,6 +100,64 @@ namespace ShapeEditorTest
             Shape s = canvas1.SelectedShape;
             if (s != null)
                 canvas1.SendToBack(s);
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            this.AddShape(new Text(Point.Empty));
+        }
+
+        private void toolStripButton3_Click(object sender, EventArgs e)
+        {
+            this.AddShape(new TK(Point.Empty));
+        }
+
+        private void выходToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult res = MessageBox.Show("Вы хотите выйти из программы?", "EnergyThermo", MessageBoxButtons.OKCancel, MessageBoxIcon.Stop);
+            if (res == DialogResult.OK) Application.Exit();
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            DialogResult res = MessageBox.Show("Вы хотите выйти из программы?", "Учет сотрудников на предприятии", MessageBoxButtons.OKCancel, MessageBoxIcon.Stop);
+            if (res == DialogResult.Cancel) e.Cancel = true;
+        }
+
+        private void сохранитьКакToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+           
+            CreateImage ci = new CreateImage();
+
+            pic.Image = ci.Draw_Graph(canvas1.Width, canvas1.Height, canvas1);
+            /*
+            if (pic.Image != null)
+            {
+                SaveFileDialog savedialog = new SaveFileDialog();
+                savedialog.Title = "Сохранить картинку как...";
+                savedialog.OverwritePrompt = true;
+                savedialog.CheckPathExists = true;
+                savedialog.Filter = "Image Files(*.BMP)|*.BMP|Image Files(*.JPG)|*.JPG|Image Files(*.GIF)|*.GIF|Image Files(*.PNG)|*.PNG|All files (*.*)|*.*";
+                savedialog.ShowHelp = true;
+                if (savedialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        pic.Image.Save(savedialog.FileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Невозможно сохранить изображение", "Ошибка",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }*/
+
+        }
+
+        private void сеткаToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }

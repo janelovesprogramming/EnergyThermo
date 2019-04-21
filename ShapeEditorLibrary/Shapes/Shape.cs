@@ -16,15 +16,24 @@ namespace ShapeEditorLibrary.Shapes
         protected Shape() : this(Point.Empty)
         {
         }
-
+        private PropertyFontConfig propfonconfig;
         protected Shape(Point location)
         {
-            this.MinimumSize = new Size(50, 50);
+            this.MinimumSize = new Size(20, 20);
             this.Bounds = new Rectangle(location, this.DefaultSize);
             this.BackColor = Color.White;
             this.Locked = false;
-        }
+           this.FontField = new Font("Arial", 16);
+            this.TextField = "Текст";
+            string type_f = GetShapeTypeName();
+            if (type_f != "Text")
+            {
+                HiddenProp("FontField", false);
+                HiddenProp("TextField", false);
+            }
 
+        }
+        
         #region Enums
 
         public enum HitStatus
@@ -48,6 +57,7 @@ namespace ShapeEditorLibrary.Shapes
         public event EventHandler LocationChanged;
         public event EventHandler SizeChanged;
         public event EventHandler AppearanceChanged;
+        public event EventHandler FontChange;
 
         protected virtual void OnLocationChanged(EventArgs e)
         {
@@ -62,6 +72,11 @@ namespace ShapeEditorLibrary.Shapes
         protected virtual void OnAppearanceChanged(EventArgs e)
         {
             if (this.AppearanceChanged != null) this.AppearanceChanged(this, e);
+        }
+
+        protected virtual void OnFontChanged(EventArgs e)
+        {
+            if (this.FontChange != null) this.FontChange(this, e);
         }
 
         #endregion
@@ -84,11 +99,22 @@ namespace ShapeEditorLibrary.Shapes
             }
         }
 
+        String m_TextField;
+        [Browsable(true)]
+        [Description("Текстовое поле")]
+        [DisplayName("Текст")]
+        public String TextField
+        {
+            get { return m_TextField; }
+            set { m_TextField = value; }
+        }
+
         private Rectangle _Bounds;
         /// <summary>
         /// The location and size of this Shape.
         /// </summary>
-       
+
+        
         [Browsable(false)]
         public Rectangle Bounds
         {
@@ -98,6 +124,21 @@ namespace ShapeEditorLibrary.Shapes
                 _Bounds = value;
                 this.GrabHandles.SetBounds(value);
             }
+        }
+
+        bool flag_font;
+        Font m_FontField;
+        /// <summary>
+        /// The font of text.
+        /// </summary>
+        [Browsable(true)]
+        [Description("Example of font field")]
+        [DisplayName("Font field")]
+        public Font FontField
+        {
+            get { return m_FontField; }
+            set { m_FontField = value; }
+
         }
 
         /// <summary>
@@ -159,15 +200,26 @@ namespace ShapeEditorLibrary.Shapes
         {
             get
             {
-                if (_GrabHandles == null) _GrabHandles = new GrabHandles(this);
-                return _GrabHandles;
+                string type_f = GetShapeTypeName();
+                //if (type_f != "Text")
+                //{
+                    if (_GrabHandles == null) _GrabHandles = new GrabHandles(this);
+
+
+                    return _GrabHandles;
+                //}
+                //return null;
             }
         }
+
+        
+
 
         private Size _MinimumSize;
         /// <summary>
         /// The minimum size that this Shape can get while resizing.
         /// </summary>
+        [Browsable(false)]
         public Size MinimumSize
         {
             get { return _MinimumSize; }
@@ -184,12 +236,13 @@ namespace ShapeEditorLibrary.Shapes
         [XmlIgnore]
         protected virtual Size DefaultSize
         {
-            get { return new Size(150, 150); }
+            get { return new Size(40, 40); }
         }
-        
+
         /// <summary>
         /// The background color of this Shape.
         /// </summary>
+        [Browsable(false)]
         [XmlIgnore]
         public Color BackColor { get; set; }
 
@@ -219,7 +272,19 @@ namespace ShapeEditorLibrary.Shapes
 
         internal virtual void DrawGrabHandles(Graphics g, bool firstSelection)
         {
-            this.GrabHandles.Draw(g, firstSelection);
+            string type_f = GetShapeTypeName();
+            if (type_f == "Text")
+            {
+                HiddenProp("FontField", true);
+                HiddenProp("TextField", true);
+            }
+            else
+            {
+                HiddenProp("FontField", false);
+                HiddenProp("TextField", false);
+            }
+            this.GrabHandles.Draw(g, firstSelection,this);
+          
         }
 
         public void Move(Point newLocation)
@@ -237,6 +302,7 @@ namespace ShapeEditorLibrary.Shapes
         /// <param name="mouseLocation">The current mouse location.</param>
         public void Resize(HitStatus hitStatus, Point mouseLocation)
         {
+            
             this.Resize(hitStatus, mouseLocation.X, mouseLocation.Y);
         }
 
@@ -431,6 +497,17 @@ namespace ShapeEditorLibrary.Shapes
 
         #endregion
 
+        public void HiddenProp(string type_prop, bool flag)
+        {
+            PropertyDescriptor descriptor =
+            TypeDescriptor.GetProperties(this.GetType())[type_prop];
+            BrowsableAttribute attrib =
+              (BrowsableAttribute)descriptor.Attributes[typeof(BrowsableAttribute)];
+            FieldInfo isBrow =
+              attrib.GetType().GetField("browsable", BindingFlags.NonPublic | BindingFlags.Instance);
+            isBrow.SetValue(attrib, flag);
+        }
+
         /// <summary>
         /// Gets the HitStatus belonging to the specified location. Used to determine if the Shape should be resized, and in which direction, or moved.
         /// </summary>
@@ -438,9 +515,11 @@ namespace ShapeEditorLibrary.Shapes
         /// <returns>The HitStatus belonging to the specified location.</returns>
         public HitStatus GetHitTest(Point location)
         {
+            
             string type_f = GetShapeTypeName();
-            if (this.GrabHandles.TotalBounds.Contains(location)&& type_f != "Pipeline")
+            if (this.GrabHandles.TotalBounds.Contains(location)&& type_f != "Pipeline" && type_f != "TK" && type_f !="Text" && type_f != "TriangleShape" && type_f != "CircleShape")
             {
+                
                 // Diagonal resizing (has precedence over normal resizing)
                 if (this.GrabHandles.TopLeft.Contains(location))
                     return HitStatus.ResizeTopLeft;
@@ -473,6 +552,26 @@ namespace ShapeEditorLibrary.Shapes
                     return HitStatus.ResizeBottomRight;               
 
                 // If all else fails: drag
+                return HitStatus.Drag;
+            }
+            else if (this.GrabHandles.TotalBounds.Contains(location) && type_f == "Text")
+            {
+                //MessageBox.Show(this.FontField.Height.ToString() + "  " + this.FontField.Size.ToString());
+                return HitStatus.Drag;
+            }
+            else if (this.GrabHandles.TotalBounds.Contains(location) && type_f == "TriangleShape")
+            {
+                //MessageBox.Show(this.FontField.Height.ToString() + "  " + this.FontField.Size.ToString());
+                return HitStatus.Drag;
+            }
+            else if (this.GrabHandles.TotalBounds.Contains(location) && type_f == "CircleShape")
+            {
+                //MessageBox.Show(this.FontField.Height.ToString() + "  " + this.FontField.Size.ToString());
+                return HitStatus.Drag;
+            }
+            else if (this.GrabHandles.TotalBounds.Contains(location) && type_f == "TK")
+            {
+               
                 return HitStatus.Drag;
             }
             else

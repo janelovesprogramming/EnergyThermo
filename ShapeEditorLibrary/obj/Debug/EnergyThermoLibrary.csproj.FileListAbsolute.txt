@@ -3,3 +3,10 @@ C:\Users\Игорь\Desktop\ShapeEditorTest\ShapeEditorLibrary\bin\Debug\ShapeEd
 C:\Users\Игорь\Desktop\ShapeEditorTest\ShapeEditorLibrary\obj\Debug\EnergyThermoLibrary.csprojResolveAssemblyReference.cache
 C:\Users\Игорь\Desktop\ShapeEditorTest\ShapeEditorLibrary\obj\Debug\ShapeEditorLibrary.dll
 C:\Users\Игорь\Desktop\ShapeEditorTest\ShapeEditorLibrary\obj\Debug\ShapeEditorLibrary.pdb
+C:\Users\Игорь\Desktop\EnergyThermo\ShapeEditorLibrary\bin\Debug\ShapeEditorLibrary.dll
+C:\Users\Игорь\Desktop\EnergyThermo\ShapeEditorLibrary\bin\Debug\ShapeEditorLibrary.pdb
+C:\Users\Игорь\Desktop\EnergyThermo\ShapeEditorLibrary\obj\Debug\EnergyThermoLibrary.csprojResolveAssemblyReference.cache
+C:\Users\Игорь\Desktop\EnergyThermo\ShapeEditorLibrary\obj\Debug\ShapeEditorLibrary.dll
+C:\Users\Игорь\Desktop\EnergyThermo\ShapeEditorLibrary\obj\Debug\ShapeEditorLibrary.pdb
+C:\Users\Игорь\Desktop\EnergyThermo\ShapeEditorLibrary\obj\Debug\ShapeEditorLibrary.Properties.Resources.resources
+C:\Users\Игорь\Desktop\EnergyThermo\ShapeEditorLibrary\obj\Debug\EnergyThermoLibrary.csproj.GenerateResource.Cache

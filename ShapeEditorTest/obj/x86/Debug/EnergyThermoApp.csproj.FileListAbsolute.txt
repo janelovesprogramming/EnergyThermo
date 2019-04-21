@@ -10,3 +10,11 @@ C:\Users\Игорь\Desktop\ShapeEditorTest\ShapeEditorTest\obj\x86\Debug\ShapeE
 C:\Users\Игорь\Desktop\ShapeEditorTest\ShapeEditorTest\obj\x86\Debug\ShapeEditorTest.pdb
 C:\Users\Игорь\Desktop\EnergyThermo\ShapeEditorTest\obj\x86\Debug\ShapeEditorTest.exe
 C:\Users\Игорь\Desktop\EnergyThermo\ShapeEditorTest\obj\x86\Debug\ShapeEditorTest.pdb
+C:\Users\Игорь\Desktop\EnergyThermo\ShapeEditorTest\bin\Debug\ShapeEditorTest.exe
+C:\Users\Игорь\Desktop\EnergyThermo\ShapeEditorTest\bin\Debug\ShapeEditorTest.pdb
+C:\Users\Игорь\Desktop\EnergyThermo\ShapeEditorTest\bin\Debug\ShapeEditorLibrary.dll
+C:\Users\Игорь\Desktop\EnergyThermo\ShapeEditorTest\bin\Debug\ShapeEditorLibrary.pdb
+C:\Users\Игорь\Desktop\EnergyThermo\ShapeEditorTest\obj\x86\Debug\EnergyThermoApp.csprojResolveAssemblyReference.cache
+C:\Users\Игорь\Desktop\EnergyThermo\ShapeEditorTest\obj\x86\Debug\ShapeEditorTest.Form1.resources
+C:\Users\Игорь\Desktop\EnergyThermo\ShapeEditorTest\obj\x86\Debug\ShapeEditorTest.Properties.Resources.resources
+C:\Users\Игорь\Desktop\EnergyThermo\ShapeEditorTest\obj\x86\Debug\EnergyThermoApp.csproj.GenerateResource.Cache

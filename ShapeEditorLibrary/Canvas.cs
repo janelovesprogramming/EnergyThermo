@@ -276,7 +276,7 @@ namespace ShapeEditorLibrary
             }
         }
 
-        private void PaintGrid(Graphics g)
+        public void PaintGrid(Graphics g)
         {
             const int gridSize = 10;
             for (var x = 0; x < this.Width; x += gridSize)
