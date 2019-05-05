@@ -36,5 +36,13 @@ namespace ShapeEditorLibrary.Shapes
                 
             }
         }
+        public override void DrawText(System.Drawing.Graphics g)
+        {
+            using (var b = new SolidBrush(Color.Black))
+            {
+                g.FillEllipse(b, this.Bounds);
+                g.DrawEllipse(Pens.Black, this.Bounds);
+            }
+        }
     }
 }

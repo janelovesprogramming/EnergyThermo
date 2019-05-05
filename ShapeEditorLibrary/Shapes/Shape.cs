@@ -270,6 +270,8 @@ namespace ShapeEditorLibrary.Shapes
         /// <param name="g">The Graphics object provided to draw this Shape.</param>
         public abstract void Draw(Graphics g);
 
+        public abstract void DrawText(Graphics g);
+
         internal virtual void DrawGrabHandles(Graphics g, bool firstSelection)
         {
             string type_f = GetShapeTypeName();

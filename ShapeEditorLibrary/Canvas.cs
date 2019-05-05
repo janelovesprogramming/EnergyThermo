@@ -195,6 +195,7 @@ namespace ShapeEditorLibrary
                 this.Shapes.Remove(s);
                 this.Shapes.Add(s);
                 this.Invalidate();
+                
             }
         }
         public void RemoveShape(Shape s)
@@ -268,6 +269,8 @@ namespace ShapeEditorLibrary
             foreach (var s in this.Shapes)
             {
                 s.Draw(e.Graphics);
+                if(s.GetShapeTypeName() == "TK")
+                    s.DrawText(e.Graphics);
             }
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
             foreach (var s in this.SelectedShapes)
