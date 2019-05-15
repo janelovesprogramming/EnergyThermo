@@ -70,7 +70,6 @@
     <Compile Include="Shapes\Shape.cs" />
     <Compile Include="Shapes\ShapeCollection.cs" />
     <Compile Include="Shapes\Text.cs" />
-    <Compile Include="Shapes\CreateImage.cs" />
     <Compile Include="Shapes\xmlConvert.cs" />
     <Compile Include="Shapes\TK.cs" />
     <Compile Include="Shapes\TriangleShape.cs" />

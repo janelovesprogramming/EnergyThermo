@@ -126,13 +126,6 @@ namespace ShapeEditorTest
 
         private void сохранитьКакToolStripMenuItem_Click(object sender, EventArgs e)
         {
-           
-            CreateImage ci = new CreateImage();
-
-            pic.Image = ci.Draw_Graph(canvas1.Width, canvas1.Height, canvas1);
-            /*
-            if (pic.Image != null)
-            {
                 SaveFileDialog savedialog = new SaveFileDialog();
                 savedialog.Title = "Сохранить картинку как...";
                 savedialog.OverwritePrompt = true;
@@ -143,7 +136,13 @@ namespace ShapeEditorTest
                 {
                     try
                     {
-                        pic.Image.Save(savedialog.FileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+                        int width = canvas1.Size.Width;
+                        int height = canvas1.Size.Height;
+
+                        Bitmap bm = new Bitmap(width, height);
+                        canvas1.DrawToBitmap(bm, new Rectangle(0, 0, width, height));
+
+                        bm.Save(savedialog.FileName, System.Drawing.Imaging.ImageFormat.Jpeg);
                     }
                     catch
                     {
@@ -151,8 +150,6 @@ namespace ShapeEditorTest
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
-            }*/
-
         }
 
         
@@ -168,7 +165,128 @@ namespace ShapeEditorTest
         {
             Point p = new Point(e.X, e.Y);
             List<Shape> s = canvas1.GetShapesAtPoint(p);
-            MessageBox.Show(s[1].ToString());
+            //MessageBox.Show(s[1].ToString());
+        }
+
+        private void сохранитьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<Shape> s = canvas1.GetShapes();
+            DataSet ds = new DataSet("Scheme");
+            DataTable dt = new DataTable("Pipeline");
+            ds.Tables.Add(dt);
+
+            DataRow Row;
+            DataColumn column;
+            column = new DataColumn();
+            column.DataType = System.Type.GetType("System.Int32");
+            column.ColumnName = "LocationX";
+            column.AutoIncrement = false;
+            column.ReadOnly = false;
+            column.Unique = false;
+      
+            dt.Columns.Add(column);
+
+            column = new DataColumn();
+            column.DataType = System.Type.GetType("System.Int32");
+            column.ColumnName = "LocationY";
+            column.AutoIncrement = false;
+            column.ReadOnly = false;
+            column.Unique = false;
+
+            dt.Columns.Add(column);
+
+            column = new DataColumn();
+            column.DataType = System.Type.GetType("System.Double");
+            column.ColumnName = "SizeH";
+            column.AutoIncrement = false;
+            column.ReadOnly = false;
+            column.Unique = false;
+
+
+            dt.Columns.Add(column);
+
+            column = new DataColumn();
+            column.DataType = System.Type.GetType("System.Double");
+            column.ColumnName = "SizeW";
+            column.AutoIncrement = false;
+            column.ReadOnly = false;
+            column.Unique = false;
+
+
+            dt.Columns.Add(column);
+
+            column = new DataColumn();
+            column.DataType = System.Type.GetType("System.String");
+            column.ColumnName = "Name";
+            column.AutoIncrement = false;
+            column.ReadOnly = false;
+            column.Unique = false;
+
+            dt.Columns.Add(column);
+
+
+            for (int i = 0; i < s.Count; i++)
+            {
+
+                if(s[i].GetShapeTypeName() == "Pipeline")
+                {
+                    Row = dt.NewRow();
+
+                    Row["Name"] = s[i].Name;
+                    Row["LocationX"] = s[i].Location.X;
+                    Row["LocationY"] = s[i].Location.Y;
+                    Row["SizeW"] = s[i].Size.Width;
+                    Row["SizeH"] = s[i].Size.Height;
+
+                    dt.Rows.Add(Row);
+
+                }
+            }
+                //MessageBox.Show(s[0].TextField.ToString());
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "XML-File | *.xml";
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                    ds.WriteXml(saveFileDialog.FileName);
+
+            MessageBox.Show("Данные сохранены в файл");
+        }
+
+        private void загрузитьИхXmlToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            List<Shape> s = new List<Shape>();
+            DataSet ds = new DataSet();
+            
+            openFileDialog1.Filter = "XML-File | *.xml";
+            if (openFileDialog1.ShowDialog() == DialogResult.Cancel)
+                return;
+            // получаем выбранный файл
+            string filename = openFileDialog1.FileName;
+            // читаем файл в строку
+            ds.ReadXml(filename);
+            DataTable dt = ds.Tables[0];
+            DataRow[] rows = dt.Select();
+
+
+            // Print the value one column of each DataRow.
+            for (int i = 0; i < rows.Length; i++)
+            {
+                
+                Point p = new Point(Convert.ToInt32(rows[i]["LocationX"]), Convert.ToInt32(rows[i]["LocationY"]));
+                Size siz = new Size(Convert.ToInt32(rows[i]["SizeW"]), Convert.ToInt32(rows[i]["SizeH"]));
+
+                Pipeline pip = new Pipeline(p);
+                pip.Name = rows[i]["Name"].ToString();
+                
+                pip.Location = p;
+                pip.Size = siz;
+                s.Add(pip);
+                canvas1.Shapes.Add(s[i]);
+
+            }
+            
+            
+            MessageBox.Show("Файл открыт");
         }
     }
     }

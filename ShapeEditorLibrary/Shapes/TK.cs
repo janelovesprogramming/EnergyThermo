@@ -29,10 +29,10 @@ namespace ShapeEditorLibrary.Shapes
         }
         public override void DrawText(System.Drawing.Graphics g)
         {
-            using (var b = new SolidBrush(Color.White))
+            using (var b = new SolidBrush(Color.Transparent))
             {
-                g.FillEllipse(b, this.Bounds);
-                g.DrawEllipse(Pens.Black, this.Bounds);
+               g.FillRectangle(b, this.Bounds);
+               g.DrawRectangle(Pens.Red, this.Bounds.X - 2, this.Bounds.Y - 2, this.Bounds.Width + 8,this.Bounds.Height+8);
             }
         }
     }

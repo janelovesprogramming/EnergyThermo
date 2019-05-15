@@ -272,6 +272,9 @@ namespace ShapeEditorLibrary
                 s.Draw(e.Graphics);
                 if(s.GetShapeTypeName() == "TK" || s.GetShapeTypeName() == "Object" || s.GetShapeTypeName() == "Pipeline")
                     s.DrawText(e.Graphics);
+                if(flag)
+                    s.DrawText(e.Graphics);
+
             }
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
             foreach (var s in this.SelectedShapes)
@@ -583,6 +586,7 @@ namespace ShapeEditorLibrary
 
         #endregion
 
+      
         #region Mouse Events
 
         protected override void OnMouseDown(MouseEventArgs e)
@@ -649,9 +653,10 @@ namespace ShapeEditorLibrary
             if (snapLines != null) snapLines.Clear();
             this.Invalidate();
         }
-
+        bool flag;
         protected override void OnMouseMove(MouseEventArgs e)
         {
+            flag = false;
             base.OnMouseMove(e);
             if (mouseDown)
             {
@@ -684,6 +689,26 @@ namespace ShapeEditorLibrary
                             shape.Location = this.SelectedShape.Location.Subtract(relativeLocations[i - 1]);
                             this.InvalidateShape(shape);
                         }
+                        Point p = new Point(e.X, e.Y);
+                        List<Shape> s = GetShapesAtPoint(p);
+                        if (this.SelectedShape.GetShapeTypeName() == "Compensator")
+                        {
+                            if (s.Count > 1)
+                            {
+                                for (int i = 0; i < s.Count; i++)
+                                {
+                                    if (s[i].GetShapeTypeName() == "Pipeline")
+                                    {
+                                        flag = true;
+                                        break;
+                                    }
+                                }
+                                //MessageBox.Show(s.Count.ToString());
+                            }
+                            else
+                                flag = false;
+                        }
+
                     }
                     else if (hitStatus != Shape.HitStatus.None)
                     {
@@ -768,6 +793,13 @@ namespace ShapeEditorLibrary
             return (from Shape s in this.Shapes
                     where s.GrabHandles.TotalBounds.Contains(p)
                     orderby this.Shapes.IndexOf(s) descending 
+                    select s).ToList();
+        }
+
+        public List<Shape> GetShapes()
+        {
+            return (from Shape s in this.Shapes
+                    orderby this.Shapes.IndexOf(s) descending
                     select s).ToList();
         }
 

@@ -551,7 +551,7 @@ namespace ShapeEditorLibrary.Shapes
         {
             
             string type_f = GetShapeTypeName();
-            if (this.GrabHandles.TotalBounds.Contains(location)&& type_f != "Pipeline" && type_f != "TK" && type_f !="Text" && type_f != "TriangleShape" && type_f != "CircleShape")
+            if (this.GrabHandles.TotalBounds.Contains(location)&& type_f != "Pipeline" && type_f != "TK" && type_f !="Text" && type_f != "TriangleShape" && type_f != "CircleShape" && type_f != "Compensator")
             {
                 
                 // Diagonal resizing (has precedence over normal resizing)
@@ -606,6 +606,11 @@ namespace ShapeEditorLibrary.Shapes
             else if (this.GrabHandles.TotalBounds.Contains(location) && type_f == "TK")
             {
                
+                return HitStatus.Drag;
+            }
+            else if (this.GrabHandles.TotalBounds.Contains(location) && type_f == "Compensator")
+            {
+
                 return HitStatus.Drag;
             }
             else

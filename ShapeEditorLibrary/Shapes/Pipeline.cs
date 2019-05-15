@@ -31,7 +31,7 @@ namespace ShapeEditorLibrary.Shapes
             {
                 Pen p = new Pen(Color.Black);
                 g.DrawLine(p, this.Bounds.X + this.Bounds.Width/2, this.Bounds.Y + this.Bounds.Height/2, this.Bounds.X + this.Bounds.Width / 2,this.Bounds.Y);
-                g.DrawLine(p, this.Bounds.X + this.Bounds.Width / 2, this.Bounds.Y, this.Bounds.Width, this.Bounds.Height);
+                g.DrawLine(p, this.Bounds.X + this.Bounds.Width / 2, this.Bounds.Y, this.Bounds.X + this.Bounds.Width, this.Bounds.Y + this.Bounds.Height - 20);
             }
         }
     }
