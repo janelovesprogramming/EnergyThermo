@@ -78,7 +78,7 @@
             this.toolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.VerticalStackWithOverflow;
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(123, 547);
+            this.toolStrip1.Size = new System.Drawing.Size(166, 547);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -87,7 +87,7 @@
             this.addRectangleButton.Image = ((System.Drawing.Image)(resources.GetObject("addRectangleButton.Image")));
             this.addRectangleButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.addRectangleButton.Name = "addRectangleButton";
-            this.addRectangleButton.Size = new System.Drawing.Size(120, 20);
+            this.addRectangleButton.Size = new System.Drawing.Size(163, 20);
             this.addRectangleButton.Text = "Объекты";
             this.addRectangleButton.Click += new System.EventHandler(this.addRectangleButton_Click);
             // 
@@ -96,7 +96,7 @@
             this.addEllipseButton.Image = ((System.Drawing.Image)(resources.GetObject("addEllipseButton.Image")));
             this.addEllipseButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.addEllipseButton.Name = "addEllipseButton";
-            this.addEllipseButton.Size = new System.Drawing.Size(120, 20);
+            this.addEllipseButton.Size = new System.Drawing.Size(163, 20);
             this.addEllipseButton.Text = "Тепловая камера";
             this.addEllipseButton.Click += new System.EventHandler(this.addEllipseButton_Click);
             // 
@@ -105,7 +105,7 @@
             this.addTriangleButton.Image = ((System.Drawing.Image)(resources.GetObject("addTriangleButton.Image")));
             this.addTriangleButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.addTriangleButton.Name = "addTriangleButton";
-            this.addTriangleButton.Size = new System.Drawing.Size(120, 20);
+            this.addTriangleButton.Size = new System.Drawing.Size(163, 20);
             this.addTriangleButton.Text = "Компенсатор";
             this.addTriangleButton.Click += new System.EventHandler(this.addTriangleButton_Click);
             // 
@@ -114,8 +114,8 @@
             this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(120, 20);
-            this.toolStripButton1.Text = "Трубопровод";
+            this.toolStripButton1.Size = new System.Drawing.Size(163, 20);
+            this.toolStripButton1.Text = "Подающий трубопровод";
             this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
             // toolStripButton2
@@ -123,7 +123,7 @@
             this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
             this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(120, 20);
+            this.toolStripButton2.Size = new System.Drawing.Size(163, 20);
             this.toolStripButton2.Text = "Текст";
             this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
             // 
@@ -132,14 +132,14 @@
             this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
             this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton3.Name = "toolStripButton3";
-            this.toolStripButton3.Size = new System.Drawing.Size(120, 20);
+            this.toolStripButton3.Size = new System.Drawing.Size(163, 20);
             this.toolStripButton3.Text = "Тройник";
             this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
             // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(123, 24);
+            this.splitContainer1.Location = new System.Drawing.Point(166, 24);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -150,8 +150,8 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.propertyGrid1);
             this.splitContainer1.Panel2.Controls.Add(this.shapesComboBox1);
-            this.splitContainer1.Size = new System.Drawing.Size(855, 547);
-            this.splitContainer1.SplitterDistance = 639;
+            this.splitContainer1.Size = new System.Drawing.Size(812, 547);
+            this.splitContainer1.SplitterDistance = 606;
             this.splitContainer1.TabIndex = 1;
             // 
             // contextMenuStrip1
@@ -189,7 +189,7 @@
             this.propertyGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.propertyGrid1.Location = new System.Drawing.Point(0, 21);
             this.propertyGrid1.Name = "propertyGrid1";
-            this.propertyGrid1.Size = new System.Drawing.Size(212, 526);
+            this.propertyGrid1.Size = new System.Drawing.Size(202, 526);
             this.propertyGrid1.TabIndex = 0;
             // 
             // menuStrip1
@@ -266,12 +266,13 @@
             this.canvas1.Name = "canvas1";
             this.canvas1.ShapeAlignDistance = 15;
             this.canvas1.ShapeSnapDistance = 15;
-            this.canvas1.Size = new System.Drawing.Size(639, 547);
+            this.canvas1.Size = new System.Drawing.Size(606, 547);
             this.canvas1.SnapMode = ShapeEditorLibrary.Canvas.SnapModes.SnapLines;
             this.canvas1.TabIndex = 0;
             this.canvas1.SelectedShapeChanged += new System.EventHandler(this.canvas1_SelectedShapeChanged);
             this.canvas1.ShapesCollectionChanged += new System.EventHandler(this.canvas1_ShapesCollectionChanged);
             this.canvas1.DoubleClick += new System.EventHandler(this.canvas1_DoubleClick);
+            this.canvas1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.canvas1_MouseClick);
             // 
             // pic
             // 
@@ -290,7 +291,7 @@
             this.shapesComboBox1.FormattingEnabled = true;
             this.shapesComboBox1.Location = new System.Drawing.Point(0, 0);
             this.shapesComboBox1.Name = "shapesComboBox1";
-            this.shapesComboBox1.Size = new System.Drawing.Size(212, 21);
+            this.shapesComboBox1.Size = new System.Drawing.Size(202, 21);
             this.shapesComboBox1.TabIndex = 1;
             this.shapesComboBox1.SelectedIndexChanged += new System.EventHandler(this.shapesComboBox1_SelectedIndexChanged);
             // 

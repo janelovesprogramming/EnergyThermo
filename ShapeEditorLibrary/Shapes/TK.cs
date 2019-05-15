@@ -15,7 +15,7 @@ namespace ShapeEditorLibrary.Shapes
 
         public override string GetShapeTypeName()
         {
-            return "TK";
+            return "Compensator";
         }
 
         public override void Draw(System.Drawing.Graphics g)
@@ -29,7 +29,7 @@ namespace ShapeEditorLibrary.Shapes
         }
         public override void DrawText(System.Drawing.Graphics g)
         {
-            using (var b = new SolidBrush(Color.Black))
+            using (var b = new SolidBrush(Color.White))
             {
                 g.FillEllipse(b, this.Bounds);
                 g.DrawEllipse(Pens.Black, this.Bounds);

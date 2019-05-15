@@ -155,9 +155,20 @@ namespace ShapeEditorTest
 
         }
 
+        
         private void сеткаToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
+            Graphics g = canvas1.CreateGraphics();
+            canvas1.PaintPoint(g);
+        }
+
+       
+
+        private void canvas1_MouseClick(object sender, MouseEventArgs e)
+        {
+            Point p = new Point(e.X, e.Y);
+            List<Shape> s = canvas1.GetShapesAtPoint(p);
+            MessageBox.Show(s[1].ToString());
         }
     }
-}
+    }

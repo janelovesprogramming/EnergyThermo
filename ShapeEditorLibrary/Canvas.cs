@@ -9,6 +9,7 @@ using ShapeEditorLibrary.Shapes;
 using System.Drawing;
 using System.ComponentModel;
 using ShapeEditorLibrary.Extensions;
+using System.Drawing.Drawing2D;
 
 namespace ShapeEditorLibrary
 {
@@ -269,7 +270,7 @@ namespace ShapeEditorLibrary
             foreach (var s in this.Shapes)
             {
                 s.Draw(e.Graphics);
-                if(s.GetShapeTypeName() == "TK")
+                if(s.GetShapeTypeName() == "TK" || s.GetShapeTypeName() == "Object" || s.GetShapeTypeName() == "Pipeline")
                     s.DrawText(e.Graphics);
             }
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
@@ -292,6 +293,20 @@ namespace ShapeEditorLibrary
             }
         }
 
+        public void PaintPoint(Graphics g)
+        {
+            const int gridSize = 20;
+            Pen pen = new Pen(Brushes.Gray);
+            
+            for (var x = 0; x < this.Width; x += gridSize)
+            {
+                for (var y = 0; y < this.Height; y += gridSize)
+                {
+                    g.DrawLine(pen, 0, y, this.Width, y);
+                    g.DrawLine(pen, x, 0, x, this.Height);
+                }
+            }
+        }
         #region SnapLines
 
         private void SnapShape(Shape movingShape)
@@ -748,7 +763,7 @@ namespace ShapeEditorLibrary
             return shapes.Count > 0 ? shapes[0] : null;
         }
 
-        private List<Shape> GetShapesAtPoint(Point p)
+        public List<Shape> GetShapesAtPoint(Point p)
         {
             return (from Shape s in this.Shapes
                     where s.GrabHandles.TotalBounds.Contains(p)

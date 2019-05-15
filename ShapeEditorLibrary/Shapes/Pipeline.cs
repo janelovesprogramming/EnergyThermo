@@ -21,7 +21,7 @@ namespace ShapeEditorLibrary.Shapes
         {
             using (var b = new SolidBrush(this.BackColor))
             {
-                Pen p = new Pen(Color.FromArgb(255, 0, 255, 0), 4);                
+                Pen p = new Pen(Color.Red,4);                
                 g.DrawLine(p, this.Bounds.X, this.Bounds.Y, this.Bounds.X + this.Bounds.Width, this.Bounds.Y + this.Bounds.Height);
             }
         }
@@ -29,8 +29,9 @@ namespace ShapeEditorLibrary.Shapes
         {
             using (var b = new SolidBrush(Color.Black))
             {
-                g.FillEllipse(b, this.Bounds);
-                g.DrawEllipse(Pens.Black, this.Bounds);
+                Pen p = new Pen(Color.Black);
+                g.DrawLine(p, this.Bounds.X + this.Bounds.Width/2, this.Bounds.Y + this.Bounds.Height/2, this.Bounds.X + this.Bounds.Width / 2,this.Bounds.Y);
+                g.DrawLine(p, this.Bounds.X + this.Bounds.Width / 2, this.Bounds.Y, this.Bounds.Width, this.Bounds.Height);
             }
         }
     }

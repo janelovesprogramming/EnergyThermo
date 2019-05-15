@@ -11,6 +11,10 @@ namespace ShapeEditorLibrary.Shapes
             : base(location)
         {
         }
+        public override string GetShapeTypeName()
+        {
+            return "Object";
+        }
 
         public override void Draw(System.Drawing.Graphics g)
         {
@@ -22,10 +26,20 @@ namespace ShapeEditorLibrary.Shapes
         }
         public override void DrawText(System.Drawing.Graphics g)
         {
-            using (var b = new SolidBrush(Color.Black))
+            using (var b = new SolidBrush(this.BackColor))
             {
-                g.FillEllipse(b, this.Bounds);
-                g.DrawEllipse(Pens.Black, this.Bounds);
+                Pen p = new Pen(Color.FromArgb(255, 0, 255, 0), 4);
+
+                String drawString = this.TextField;
+
+                // Create font and brush.
+                Font drawFont = this.FontField;
+                SolidBrush drawBrush = new SolidBrush(Color.Black);
+
+
+                // Draw text to screen
+                g.DrawString(drawString, drawFont, drawBrush, this.Location.X, this.Location.Y + this.Size.Height/3);
+
             }
         }
     }

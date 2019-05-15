@@ -23,10 +23,10 @@ namespace ShapeEditorLibrary.Shapes
             this.Bounds = new Rectangle(location, this.DefaultSize);
             this.BackColor = Color.White;
             this.Locked = false;
-           this.FontField = new Font("Arial", 16);
+            this.FontField = new Font("Arial", 16);
             this.TextField = "Текст";
             string type_f = GetShapeTypeName();
-            if (type_f != "Text")
+            if (type_f != "Text" || type_f != "Object")
             {
                 HiddenProp("FontField", false);
                 HiddenProp("TextField", false);
@@ -58,10 +58,16 @@ namespace ShapeEditorLibrary.Shapes
         public event EventHandler SizeChanged;
         public event EventHandler AppearanceChanged;
         public event EventHandler FontChange;
+        public event EventHandler TextChanged;
 
         protected virtual void OnLocationChanged(EventArgs e)
         {
             if (this.LocationChanged != null) this.LocationChanged(this, e);
+        }
+
+        protected virtual void OnTextChanged(EventArgs e)
+        {
+            if (this.TextChanged != null) this.TextChanged(this, e);
         }
 
         protected virtual void OnSizeChanged(EventArgs e)
@@ -106,7 +112,14 @@ namespace ShapeEditorLibrary.Shapes
         public String TextField
         {
             get { return m_TextField; }
-            set { m_TextField = value; }
+            set {                
+                
+                m_TextField = value;               
+                
+                this.OnSizeChanged(EventArgs.Empty);
+                Rectangle rect = new Rectangle(this.Bounds.X, this.Bounds.Y, (int)m_FontField.Size*m_TextField.Length,m_FontField.Height);                
+                this.GrabHandles.SetBounds(rect);
+            }
         }
 
         private Rectangle _Bounds;
@@ -137,7 +150,11 @@ namespace ShapeEditorLibrary.Shapes
         public Font FontField
         {
             get { return m_FontField; }
-            set { m_FontField = value; }
+            set {
+                m_FontField = value;
+                this.OnSizeChanged(EventArgs.Empty);
+                
+            }
 
         }
 
@@ -151,9 +168,21 @@ namespace ShapeEditorLibrary.Shapes
             set
             {
                 if (this.Bounds.Location == value) return;
-                Rectangle rect = this.Bounds;
-                rect.Location = value;
-                this.Bounds = rect;
+                string type_f = GetShapeTypeName();
+                if (type_f != "Text")
+                {
+                    Rectangle rect = this.Bounds;
+                    rect.Location = value;
+                    this.Bounds = rect;
+                    
+                }
+                else
+                {               
+                    Rectangle rect = new Rectangle(this.Bounds.X, this.Bounds.Y, (int) m_FontField.Size * m_TextField.Length, m_FontField.Height);
+                    rect.Location = value;
+                    this.Bounds = rect;
+                    this.GrabHandles.SetBounds(rect);
+                }
                 this.OnLocationChanged(EventArgs.Empty);
             }
         }
@@ -169,9 +198,12 @@ namespace ShapeEditorLibrary.Shapes
             set
             {
                 if (this.Bounds.Size == value) return;
+
                 Rectangle rect = this.Bounds;
                 rect.Size = value;
                 this.Bounds = rect;
+
+
                 this.OnSizeChanged(EventArgs.Empty);
             }
         }
@@ -275,7 +307,7 @@ namespace ShapeEditorLibrary.Shapes
         internal virtual void DrawGrabHandles(Graphics g, bool firstSelection)
         {
             string type_f = GetShapeTypeName();
-            if (type_f == "Text")
+            if (type_f == "Text" || type_f == "Object")
             {
                 HiddenProp("FontField", true);
                 HiddenProp("TextField", true);
