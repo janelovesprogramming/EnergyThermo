@@ -14,12 +14,12 @@ namespace ShapeEditorLibrary.Shapes
         {
             this.BorderWidth = 4;
             if(parentShape.GetShapeTypeName() != "Text")
-                this.SetBounds(parentShape.Bounds);
+                this.SetBounds(parentShape.Bounds, parentShape);
             else
             {    
                             
                 Rectangle rec = new Rectangle(parentShape.Bounds.X, parentShape.Bounds.Y,50, 50);
-                this.SetBounds(rec);
+                this.SetBounds(rec, parentShape);
                 
             }
             
@@ -42,8 +42,8 @@ namespace ShapeEditorLibrary.Shapes
         {
             get
             {
-                return new Rectangle(this.BorderBounds.X - BOX_SIZE,
-                                     this.BorderBounds.Y - BOX_SIZE,
+                return new Rectangle(this.BorderBounds.X + BOX_SIZE,
+                                     this.BorderBounds.Y + BOX_SIZE,
                                      2 * BOX_SIZE + 1, 2 * BOX_SIZE + 1);
             }
         }
@@ -112,7 +112,7 @@ namespace ShapeEditorLibrary.Shapes
         {
             get
             {
-                return new Rectangle(this.BorderBounds.Right - BOX_SIZE,
+                return new Rectangle(this.BorderBounds.Right + BOX_SIZE,
                                      this.BorderBounds.Bottom - BOX_SIZE,
                                      2 * BOX_SIZE + 1, 2 * BOX_SIZE + 1);
             }
@@ -134,19 +134,22 @@ namespace ShapeEditorLibrary.Shapes
 
         #region Methods
 
-        internal void SetBounds(Rectangle shapeBounds)
+        internal void SetBounds(Rectangle shapeBounds, Shape parentShape)
         {
-            this.BorderBounds = new Rectangle(shapeBounds.X - this.BorderWidth,
+            
+                this.BorderBounds = new Rectangle(shapeBounds.X - this.BorderWidth,
                                                shapeBounds.Y - this.BorderWidth,
                                                shapeBounds.Width + 2 * this.BorderWidth,
                                                shapeBounds.Height + 2 * this.BorderWidth);
-           
+            
+        
         }
 
         internal void Draw(Graphics g, bool firstSelection, Shape parentShape)
         {
             if (parentShape.GetShapeTypeName() != "Pipeline")
                 ControlPaint.DrawBorder(g, this.BorderBounds, ControlPaint.ContrastControlDark, ButtonBorderStyle.Dotted);
+            
 
             if (this.Locked)
             {
@@ -167,6 +170,7 @@ namespace ShapeEditorLibrary.Shapes
                 }
                 else
                 {
+                    
                     this.DrawGrabHandle(g, this.TopLeft, firstSelection);
                     this.DrawGrabHandle(g, this.BottomRight, firstSelection);
                 }

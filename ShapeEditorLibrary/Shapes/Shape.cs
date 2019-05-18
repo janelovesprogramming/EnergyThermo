@@ -17,15 +17,24 @@ namespace ShapeEditorLibrary.Shapes
         {
         }
         private PropertyFontConfig propfonconfig;
+       
         protected Shape(Point location)
         {
+            string type_f = GetShapeTypeName();
             this.MinimumSize = new Size(10, 10);
-            this.Bounds = new Rectangle(location, this.DefaultSize);
+            if (type_f != "Pipeline")
+                this.Bounds = new Rectangle(location, this.DefaultSize);
+            else
+            {
+               
+                this.Bounds = new Rectangle(location, new Size(40, 40));
+            }
             this.BackColor = Color.White;
             this.Locked = false;
             this.FontField = new Font("Arial", 16);
             this.TextField = "Текст";
-            string type_f = GetShapeTypeName();
+            this.m_LogicField = true;
+            
             if (type_f != "Text" || type_f != "Object")
             {
                 HiddenProp("FontField", false);
@@ -118,7 +127,7 @@ namespace ShapeEditorLibrary.Shapes
                 
                 this.OnSizeChanged(EventArgs.Empty);
                 Rectangle rect = new Rectangle(this.Bounds.X, this.Bounds.Y, (int)m_FontField.Size*m_TextField.Length,m_FontField.Height);                
-                this.GrabHandles.SetBounds(rect);
+                this.GrabHandles.SetBounds(rect, this);
             }
         }
 
@@ -135,10 +144,11 @@ namespace ShapeEditorLibrary.Shapes
             set
             {
                 _Bounds = value;
-                this.GrabHandles.SetBounds(value);
+                this.GrabHandles.SetBounds(value,this);
             }
         }
 
+        
         bool flag_font;
         Font m_FontField;
         /// <summary>
@@ -157,6 +167,7 @@ namespace ShapeEditorLibrary.Shapes
             }
 
         }
+        
 
         /// <summary>
         /// The Location of this Shape.
@@ -181,7 +192,7 @@ namespace ShapeEditorLibrary.Shapes
                     Rectangle rect = new Rectangle(this.Bounds.X, this.Bounds.Y, (int) m_FontField.Size * m_TextField.Length, m_FontField.Height);
                     rect.Location = value;
                     this.Bounds = rect;
-                    this.GrabHandles.SetBounds(rect);
+                    this.GrabHandles.SetBounds(rect,this);
                 }
                 this.OnLocationChanged(EventArgs.Empty);
             }
@@ -208,6 +219,23 @@ namespace ShapeEditorLibrary.Shapes
             }
         }
 
+        bool m_LogicField;
+        [Browsable(true)]
+        [Description("Отобразить диаметр трубопровода")]
+        [DisplayName("Показать")]
+        public bool LogicField
+        {
+            get { return m_LogicField; }
+            set {
+                
+                m_LogicField = value;
+                //MessageBox.Show(m_LogicField.ToString());
+                this.OnSizeChanged(EventArgs.Empty);
+
+            }
+        }
+
+
         private bool locked;
 
         /// <summary>
@@ -220,6 +248,7 @@ namespace ShapeEditorLibrary.Shapes
             { 
                 locked = value;
                 this.GrabHandles.Locked = value;
+                
             }
         }
 
@@ -244,7 +273,7 @@ namespace ShapeEditorLibrary.Shapes
             }
         }
 
-        
+    
 
 
         private Size _MinimumSize;
@@ -314,6 +343,7 @@ namespace ShapeEditorLibrary.Shapes
             }
             else
             {
+                
                 HiddenProp("FontField", false);
                 HiddenProp("TextField", false);
             }
@@ -617,6 +647,10 @@ namespace ShapeEditorLibrary.Shapes
             {
                 return HitStatus.None;
             }
+        }
+        public virtual Shape GetShape(Shape s)
+        {
+            return s;
         }
 
         public virtual string GetShapeTypeName()

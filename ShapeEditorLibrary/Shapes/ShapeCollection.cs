@@ -7,6 +7,7 @@ using System.Collections;
 using System.Drawing;
 using System.Xml;
 using System.Xml.Serialization;
+using System.Windows.Forms;
 
 namespace ShapeEditorLibrary.Shapes
 {
@@ -91,16 +92,24 @@ namespace ShapeEditorLibrary.Shapes
                 var h = new Hashtable(shapes.Count);
                 foreach (Shape s in shapes)
                     h[s.Name] = null;
+                //MessageBox.Show(t.Name.ToString());
+                if (t.Name != "DistanseDiametr")
+                {
+                    Shape instance = (Shape)Activator.CreateInstance(t, new object[] { Point.Empty });
 
-                Shape instance = (Shape)Activator.CreateInstance(t, new object[] {Point.Empty});
-                string defaultName = instance.GetShapeTypeName();
-                int i = 1;
-                // As long as the hashtable contains the name, we need to keep looking
-                // Once we find a name that is not in the hashtable, we found one empty spot, so we take it
-                while (h.ContainsKey(defaultName + i))
-                    i++;
+                    string defaultName = instance.GetShapeTypeName();
+                    int i = 1;
+                    // As long as the hashtable contains the name, we need to keep looking
+                    // Once we find a name that is not in the hashtable, we found one empty spot, so we take it
+                    while (h.ContainsKey(defaultName + i))
+                        i++;
 
-                return defaultName + i;
+                    return defaultName + i;
+                }
+                else
+                {
+                    return "d+s";
+                }
             }
             else
             {

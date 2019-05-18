@@ -70,8 +70,13 @@ namespace ShapeEditorTest
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
             //this.AddShape(new Pipeline(Point.Empty));
-            this.AddShape(new Pipeline(Point.Empty));
+            Shape pip = new Pipeline(Point.Empty);
+            Shape dis = new DistanseDiametr(Point.Empty, pip);
+
+            this.AddShape(dis);
+            this.AddShape(pip);
             
+                        
         }
 
        
