@@ -19,7 +19,7 @@ namespace ShapeEditorLibrary.Shapes
         private PropertyFontConfig propfonconfig;
         protected Shape(Point location)
         {
-            this.MinimumSize = new Size(20, 20);
+            this.MinimumSize = new Size(10, 10);
             this.Bounds = new Rectangle(location, this.DefaultSize);
             this.BackColor = Color.White;
             this.Locked = false;
@@ -268,7 +268,7 @@ namespace ShapeEditorLibrary.Shapes
         [XmlIgnore]
         protected virtual Size DefaultSize
         {
-            get { return new Size(40, 40); }
+            get { return new Size(20, 20); }
         }
 
         /// <summary>

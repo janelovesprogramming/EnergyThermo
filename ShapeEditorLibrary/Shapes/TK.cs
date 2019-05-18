@@ -31,7 +31,8 @@ namespace ShapeEditorLibrary.Shapes
         {
             using (var b = new SolidBrush(Color.Transparent))
             {
-               g.FillRectangle(b, this.Bounds);
+                Pen p = new Pen(Color.Red,2);
+                g.FillRectangle(b, this.Bounds);
                g.DrawRectangle(Pens.Red, this.Bounds.X - 2, this.Bounds.Y - 2, this.Bounds.Width + 8,this.Bounds.Height+8);
             }
         }

@@ -114,13 +114,13 @@ namespace ShapeEditorTest
 
         private void выходToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DialogResult res = MessageBox.Show("Вы хотите выйти из программы?", "EnergyThermo", MessageBoxButtons.OKCancel, MessageBoxIcon.Stop);
+            DialogResult res = MessageBox.Show("Вы хотите выйти из программы?", "EnergyThermo", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
             if (res == DialogResult.OK) Application.Exit();
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            DialogResult res = MessageBox.Show("Вы хотите выйти из программы?", "Учет сотрудников на предприятии", MessageBoxButtons.OKCancel, MessageBoxIcon.Stop);
+            DialogResult res = MessageBox.Show("Вы хотите выйти из программы?", "EnergyThermo", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
             if (res == DialogResult.Cancel) e.Cancel = true;
         }
 
@@ -255,6 +255,11 @@ namespace ShapeEditorTest
         {
 
             List<Shape> s = new List<Shape>();
+           
+            List<Shape> old_s = canvas1.GetShapes();
+            for(int i = 0; i < old_s.Count; i++)
+                canvas1.RemoveShape(old_s[i]);
+
             DataSet ds = new DataSet();
             
             openFileDialog1.Filter = "XML-File | *.xml";

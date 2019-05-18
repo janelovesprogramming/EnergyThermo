@@ -10,12 +10,21 @@ namespace ShapeEditorLibrary.Shapes
 
     public class GrabHandlesLine
     {
-        public const int BOX_SIZE = 4;
+        public const int BOX_SIZE = 3;
 
         public GrabHandlesLine(Shape parentShape)
         {
-            this.BorderWidth = 3;
-            this.SetBounds(parentShape.Bounds);
+            this.BorderWidth = 4;
+            if (parentShape.GetShapeTypeName() != "Text")
+                this.SetBounds(parentShape.Bounds);
+            else
+            {
+
+                Rectangle rec = new Rectangle(parentShape.Bounds.X, parentShape.Bounds.Y, 50, 50);
+                this.SetBounds(rec);
+
+            }
+
         }
 
         #region Properties
@@ -130,14 +139,16 @@ namespace ShapeEditorLibrary.Shapes
         internal void SetBounds(Rectangle shapeBounds)
         {
             this.BorderBounds = new Rectangle(shapeBounds.X - this.BorderWidth,
-                                              shapeBounds.Y - this.BorderWidth,
-                                              shapeBounds.Width + 2 * this.BorderWidth,
-                                              shapeBounds.Height + 2 * this.BorderWidth);
+                                               shapeBounds.Y - this.BorderWidth,
+                                               shapeBounds.Width + 2 * this.BorderWidth,
+                                               shapeBounds.Height + 2 * this.BorderWidth);
+
         }
 
-        internal void Draw(Graphics g, bool firstSelection)
+        internal void Draw(Graphics g, bool firstSelection, Shape parentShape)
         {
-            ControlPaint.DrawBorder(g, this.BorderBounds, ControlPaint.ContrastControlDark, ButtonBorderStyle.Dotted);
+            if (parentShape.GetShapeTypeName() != "Pipeline")
+                ControlPaint.DrawBorder(g, this.BorderBounds, ControlPaint.ContrastControlDark, ButtonBorderStyle.Dotted);
 
             if (this.Locked)
             {
@@ -145,14 +156,22 @@ namespace ShapeEditorLibrary.Shapes
             }
             else
             {
-                this.DrawGrabHandle(g, this.TopLeft, firstSelection);
-                this.DrawGrabHandle(g, this.TopMiddle, firstSelection);
-                this.DrawGrabHandle(g, this.TopRight, firstSelection);
-                this.DrawGrabHandle(g, this.MiddleLeft, firstSelection);
-                this.DrawGrabHandle(g, this.MiddleRight, firstSelection);
-                this.DrawGrabHandle(g, this.BottomLeft, firstSelection);
-                this.DrawGrabHandle(g, this.BottomMiddle, firstSelection);
-                this.DrawGrabHandle(g, this.BottomRight, firstSelection);
+                if (parentShape.GetShapeTypeName() != "Pipeline")
+                {
+                    this.DrawGrabHandle(g, this.TopLeft, firstSelection);
+                    this.DrawGrabHandle(g, this.TopMiddle, firstSelection);
+                    this.DrawGrabHandle(g, this.TopRight, firstSelection);
+                    this.DrawGrabHandle(g, this.MiddleLeft, firstSelection);
+                    this.DrawGrabHandle(g, this.MiddleRight, firstSelection);
+                    this.DrawGrabHandle(g, this.BottomLeft, firstSelection);
+                    this.DrawGrabHandle(g, this.BottomMiddle, firstSelection);
+                    this.DrawGrabHandle(g, this.BottomRight, firstSelection);
+                }
+                else
+                {
+                    this.DrawGrabHandle(g, this.TopLeft, firstSelection);
+                    this.DrawGrabHandle(g, this.BottomRight, firstSelection);
+                }
             }
         }
 
@@ -169,13 +188,13 @@ namespace ShapeEditorLibrary.Shapes
                 rect2.Y += 1;
                 rect2.Height -= 2;
 
-                //g.FillRectangle(Brushes.Black, rect1);
-                //g.FillRectangle(Brushes.Black, rect2);
-                //g.FillRectangle(Brushes.White, innerRect);
+                g.FillRectangle(Brushes.Black, rect1);
+                g.FillRectangle(Brushes.Black, rect2);
+                g.FillRectangle(Brushes.White, innerRect);
             }
             else
             {
-                //g.FillRectangle(Brushes.Black, rect);
+                g.FillRectangle(Brushes.Black, rect);
             }
         }
 
@@ -189,8 +208,8 @@ namespace ShapeEditorLibrary.Shapes
             var innerRect = rect;
             innerRect.Inflate(-1, -1);
 
-            //g.FillRectangle(Brushes.White, innerRect);
-            //g.DrawRectangle(Pens.Black, rect);
+            g.FillRectangle(Brushes.White, innerRect);
+            g.DrawRectangle(Pens.Black, rect);
 
             var outerHandleRect1 = rect;
             outerHandleRect1.Y -= 2;
@@ -208,9 +227,9 @@ namespace ShapeEditorLibrary.Shapes
             innerHandleRect.X += 1;
             innerHandleRect.Width = 3;
 
-            //g.FillRectangle(Brushes.Black, outerHandleRect1);
-            //g.FillRectangle(Brushes.Black, outerHandleRect2);
-            //g.FillRectangle(Brushes.White, innerHandleRect);
+            g.FillRectangle(Brushes.Black, outerHandleRect1);
+            g.FillRectangle(Brushes.Black, outerHandleRect2);
+            g.FillRectangle(Brushes.White, innerHandleRect);
         }
 
         #endregion
