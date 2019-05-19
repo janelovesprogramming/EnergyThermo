@@ -42,8 +42,8 @@ namespace ShapeEditorLibrary.Shapes
         {
             get
             {
-                return new Rectangle(this.BorderBounds.X + BOX_SIZE,
-                                     this.BorderBounds.Y + BOX_SIZE,
+                return new Rectangle(this.BorderBounds.X - BOX_SIZE,
+                                     this.BorderBounds.Y - BOX_SIZE,
                                      2 * BOX_SIZE + 1, 2 * BOX_SIZE + 1);
             }
         }
@@ -112,7 +112,7 @@ namespace ShapeEditorLibrary.Shapes
         {
             get
             {
-                return new Rectangle(this.BorderBounds.Right + BOX_SIZE,
+                return new Rectangle(this.BorderBounds.Right - BOX_SIZE,
                                      this.BorderBounds.Bottom - BOX_SIZE,
                                      2 * BOX_SIZE + 1, 2 * BOX_SIZE + 1);
             }
@@ -147,7 +147,7 @@ namespace ShapeEditorLibrary.Shapes
 
         internal void Draw(Graphics g, bool firstSelection, Shape parentShape)
         {
-            if (parentShape.GetShapeTypeName() != "Pipeline")
+            if (parentShape.GetShapeTypeName() != "Pipeline" && parentShape.GetShapeTypeName() != "DistanseDiametr")
                 ControlPaint.DrawBorder(g, this.BorderBounds, ControlPaint.ContrastControlDark, ButtonBorderStyle.Dotted);
             
 
@@ -157,22 +157,29 @@ namespace ShapeEditorLibrary.Shapes
             }
             else
             {
-                if (parentShape.GetShapeTypeName() != "Pipeline")
-                {
-                    this.DrawGrabHandle(g, this.TopLeft, firstSelection);
-                    this.DrawGrabHandle(g, this.TopMiddle, firstSelection);
-                    this.DrawGrabHandle(g, this.TopRight, firstSelection);
-                    this.DrawGrabHandle(g, this.MiddleLeft, firstSelection);
-                    this.DrawGrabHandle(g, this.MiddleRight, firstSelection);
-                    this.DrawGrabHandle(g, this.BottomLeft, firstSelection);
-                    this.DrawGrabHandle(g, this.BottomMiddle, firstSelection);
-                    this.DrawGrabHandle(g, this.BottomRight, firstSelection);
-                }
-                else
+               
+
+                if(parentShape.GetShapeTypeName() == "Pipeline")
                 {
                     
                     this.DrawGrabHandle(g, this.TopLeft, firstSelection);
                     this.DrawGrabHandle(g, this.BottomRight, firstSelection);
+                }
+                else if (parentShape.GetShapeTypeName() == "DistanseDiametr")
+                {
+
+                }
+                else
+                {
+                   this.DrawGrabHandle(g, this.TopLeft, firstSelection);
+                   this.DrawGrabHandle(g, this.TopMiddle, firstSelection);
+                   this.DrawGrabHandle(g, this.TopRight, firstSelection);
+                   this.DrawGrabHandle(g, this.MiddleLeft, firstSelection);
+                   this.DrawGrabHandle(g, this.MiddleRight, firstSelection);
+                   this.DrawGrabHandle(g, this.BottomLeft, firstSelection);
+                   this.DrawGrabHandle(g, this.BottomMiddle, firstSelection);
+                   this.DrawGrabHandle(g, this.BottomRight, firstSelection);
+                    
                 }
             }
         }

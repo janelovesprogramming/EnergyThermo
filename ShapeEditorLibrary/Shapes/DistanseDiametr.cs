@@ -46,11 +46,15 @@ namespace ShapeEditorLibrary.Shapes
                     g.DrawLine(pen1, this.ShapeName.Bounds.X + this.ShapeName.Bounds.Width / 2, this.ShapeName.Bounds.Y + this.ShapeName.Bounds.Height / 2, this.Bounds.X, this.Bounds.Y + this.Bounds.Height);
                     g.DrawLine(pen1, this.Bounds.X, this.Bounds.Y + this.Bounds.Height, this.Bounds.X + this.Bounds.Width, this.Bounds.Y + this.Bounds.Height);
                     Pen p = new Pen(Color.FromArgb(255, 0, 255, 0), 4);
-
-                    String drawString = "text\ntext";
+                    double dis = 0;
+                    if (this.ShapeName.GetShapeTypeName() == "Pipeline")
+                    {
+                        dis = Math.Sqrt(Math.Pow((this.ShapeName.Location.X + this.ShapeName.Size.Width) - this.ShapeName.Location.X, 2) + Math.Pow((this.ShapeName.Location.Y + this.ShapeName.Size.Height) - this.ShapeName.Location.Y, 2));
+                    }
+                    String drawString = "text\n" + Math.Round(dis,2);
 
                     // Create font and brush.
-                    Font drawFont = this.FontField;
+                    Font drawFont = new Font("Arial", 11);
                     SolidBrush drawBrush = new SolidBrush(Color.Black);
 
 

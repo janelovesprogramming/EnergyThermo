@@ -33,7 +33,7 @@ namespace ShapeEditorLibrary.Shapes
             this.Locked = false;
             this.FontField = new Font("Arial", 16);
             this.TextField = "Текст";
-            this.m_LogicField = true;
+            this.m_LogicField = false;
             
             if (type_f != "Text" || type_f != "Object")
             {
@@ -195,6 +195,24 @@ namespace ShapeEditorLibrary.Shapes
                     this.GrabHandles.SetBounds(rect,this);
                 }
                 this.OnLocationChanged(EventArgs.Empty);
+            }
+        }
+
+        int m_Distance;
+        [Browsable(true)]
+        [Description("Длина трубопровода")]
+        [DisplayName("Длина")]
+        public int Distance
+        {
+            get { return m_Distance; }
+            set
+            {
+                string type_f = GetShapeTypeName();
+                if (type_f == "Pipeline")
+                {
+
+                }
+                this.OnSizeChanged(EventArgs.Empty);
             }
         }
 
@@ -581,7 +599,7 @@ namespace ShapeEditorLibrary.Shapes
         {
             
             string type_f = GetShapeTypeName();
-            if (this.GrabHandles.TotalBounds.Contains(location)&& type_f != "Pipeline" && type_f != "TK" && type_f !="Text" && type_f != "TriangleShape" && type_f != "CircleShape" && type_f != "Compensator")
+            if (this.GrabHandles.TotalBounds.Contains(location)&& type_f != "Pipeline" && type_f != "TK" && type_f !="Text" && type_f != "TriangleShape" && type_f != "CircleShape" && type_f != "Compensator" && type_f != "DistanseDiametr")
             {
                 
                 // Diagonal resizing (has precedence over normal resizing)
@@ -633,9 +651,12 @@ namespace ShapeEditorLibrary.Shapes
                 //MessageBox.Show(this.FontField.Height.ToString() + "  " + this.FontField.Size.ToString());
                 return HitStatus.Drag;
             }
+            else if (this.GrabHandles.TotalBounds.Contains(location) && type_f == "DistanseDiametr")
+            {
+                return HitStatus.Drag;
+            }
             else if (this.GrabHandles.TotalBounds.Contains(location) && type_f == "TK")
             {
-               
                 return HitStatus.Drag;
             }
             else if (this.GrabHandles.TotalBounds.Contains(location) && type_f == "Compensator")
