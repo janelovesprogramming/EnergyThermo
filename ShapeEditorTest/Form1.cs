@@ -8,6 +8,10 @@ using System.Text;
 using System.Windows.Forms;
 using ShapeEditorLibrary.Shapes;
 using ShapeEditorLibrary;
+using Npgsql;
+
+using System.Data.Common;
+
 
 namespace ShapeEditorTest
 {
@@ -66,7 +70,8 @@ namespace ShapeEditorTest
                 canvas1.SetSelection(null);
             }
         }
-
+        private DataSet ds = new DataSet();
+        private DataTable dt = new DataTable();
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
             //this.AddShape(new Pipeline(Point.Empty));
@@ -75,11 +80,14 @@ namespace ShapeEditorTest
 
             this.AddShape(dis);
             this.AddShape(pip);
-            
-                        
+
+          
+
+
+
         }
 
-       
+
 
         private void canvas1_DoubleClick(object sender, EventArgs e)
         {

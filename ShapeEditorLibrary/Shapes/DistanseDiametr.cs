@@ -51,7 +51,7 @@ namespace ShapeEditorLibrary.Shapes
                     {
                         dis = Math.Sqrt(Math.Pow((this.ShapeName.Location.X + this.ShapeName.Size.Width) - this.ShapeName.Location.X, 2) + Math.Pow((this.ShapeName.Location.Y + this.ShapeName.Size.Height) - this.ShapeName.Location.Y, 2));
                     }
-                    String drawString = "text\n" + Math.Round(dis,2);
+                    String drawString = this.ShapeName.MyList+"\n" + Math.Round(dis,2);
 
                     // Create font and brush.
                     Font drawFont = new Font("Arial", 11);

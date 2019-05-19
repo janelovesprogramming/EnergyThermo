@@ -7,6 +7,10 @@ using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using System.Drawing.Design;
+using Npgsql;
+using System.Data;
+using System.Data.Common;
 
 
 namespace ShapeEditorLibrary.Shapes
@@ -17,7 +21,7 @@ namespace ShapeEditorLibrary.Shapes
         {
         }
         private PropertyFontConfig propfonconfig;
-       
+
         protected Shape(Point location)
         {
             string type_f = GetShapeTypeName();
@@ -26,7 +30,7 @@ namespace ShapeEditorLibrary.Shapes
                 this.Bounds = new Rectangle(location, this.DefaultSize);
             else
             {
-               
+
                 this.Bounds = new Rectangle(location, new Size(40, 40));
             }
             this.BackColor = Color.White;
@@ -34,7 +38,7 @@ namespace ShapeEditorLibrary.Shapes
             this.FontField = new Font("Arial", 16);
             this.TextField = "Текст";
             this.m_LogicField = false;
-            
+
             if (type_f != "Text" || type_f != "Object")
             {
                 HiddenProp("FontField", false);
@@ -42,7 +46,7 @@ namespace ShapeEditorLibrary.Shapes
             }
 
         }
-        
+
         #region Enums
 
         public enum HitStatus
@@ -121,14 +125,89 @@ namespace ShapeEditorLibrary.Shapes
         public String TextField
         {
             get { return m_TextField; }
-            set {                
-                
-                m_TextField = value;               
-                
+            set {
+
+                m_TextField = value;
+
                 this.OnSizeChanged(EventArgs.Empty);
-                Rectangle rect = new Rectangle(this.Bounds.X, this.Bounds.Y, (int)m_FontField.Size*m_TextField.Length,m_FontField.Height);                
+                Rectangle rect = new Rectangle(this.Bounds.X, this.Bounds.Y, (int)m_FontField.Size * m_TextField.Length, m_FontField.Height);
                 this.GrabHandles.SetBounds(rect, this);
             }
+        }
+
+
+
+        private DataSet ds = new DataSet();
+        private DataTable dt = new DataTable();
+        private string _dvn;
+        private string myList;
+
+        [Browsable(true)]
+        [DisplayName("Диаметр трубопровода")]
+        [Description("Условный диаметр трубопровода")]
+        [Category("Характеристика стальной трубы")]
+        [TypeConverter(typeof(DiametrTypeConverter))]
+        public string MyList
+        {
+            get
+            {
+                return myList;
+            }
+            set
+            {
+
+               
+                myList = value;
+                this.OnSizeChanged(EventArgs.Empty);
+                try
+                {
+                    List<string> myList = new List<string>();
+                    // PostgeSQL-style connection string
+                    string connstring = String.Format("Server = 127.0.0.1; Port = 5432; User Id = postgres; Password =; Database = energy_thermo; ");
+                    // Making connection with Npgsql provider
+                    NpgsqlConnection conn = new NpgsqlConnection(connstring);
+                    conn.Open();
+                    // quite complex sql statement
+                    string sql = "SELECT dvn from steel_tubes where dy = " + this.MyList;
+                    // data adapter making request from our connection
+                    NpgsqlDataAdapter da = new NpgsqlDataAdapter(sql, conn);
+                    // i always reset DataSet before i do
+                    // something with it.... i don't know why :-)
+                    ds.Reset();
+                    // filling DataSet with result from NpgsqlDataAdapter
+                    da.Fill(ds);
+                    // since it C# DataSet can handle multiple tables, we will select first
+                    dt = ds.Tables[0];
+
+
+                    
+                    myList.Add(dt.Rows[0].Field<int>("dvn").ToString());
+                    _dvn = myList[0];
+                }
+                catch (Exception msg)
+                {
+                    // something went wrong, and you wanna know why
+                    throw;
+                }
+
+                this.OnAppearanceChanged(EventArgs.Empty);
+
+            }
+        }
+
+
+        
+        [Browsable(true)]
+        [DisplayName("Внутренний трубопровода")]
+        [Description("Условный диаметр трубопровода")]
+        [Category("Характеристика стальной трубы")]
+        public string Dvn
+        {
+            get
+            {
+                return _dvn;
+            }
+            
         }
 
         private Rectangle _Bounds;
