@@ -52,7 +52,7 @@ namespace ShapeEditorLibrary.Shapes
 
 
                 for (int i = 0; i < dt.Rows.Count; i++)
-                    myList.Add(dt.Rows[i].Field<int>("dy").ToString());
+                    myList.Add(dt.Rows[i].Field<int>("dn").ToString());
                 StandardValuesCollection svc = new StandardValuesCollection(myList);
                 // since we only showing the result we don't need connection anymore
                 conn.Close();

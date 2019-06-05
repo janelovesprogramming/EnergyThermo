@@ -1,0 +1,8 @@
+C:\Users\Игорь\Desktop\greatmaps\GMap.NET.WindowsForms\bin\Release\GMap.NET.WindowsForms.dll
+C:\Users\Игорь\Desktop\greatmaps\GMap.NET.WindowsForms\bin\Release\GMap.NET.WindowsForms.XML
+C:\Users\Игорь\Desktop\greatmaps\GMap.NET.WindowsForms\bin\Release\GMap.NET.Core.dll
+C:\Users\Игорь\Desktop\greatmaps\GMap.NET.WindowsForms\obj\Release\GMap.NET.WindowsForms.csprojResolveAssemblyReference.cache
+C:\Users\Игорь\Desktop\greatmaps\GMap.NET.WindowsForms\obj\Release\GMap.NET.TilePrefetcher.resources
+C:\Users\Игорь\Desktop\greatmaps\GMap.NET.WindowsForms\obj\Release\System.Windows.Forms.Properties.Resources.resources
+C:\Users\Игорь\Desktop\greatmaps\GMap.NET.WindowsForms\obj\Release\GMap.NET.WindowsForms.csproj.GenerateResource.Cache
+C:\Users\Игорь\Desktop\greatmaps\GMap.NET.WindowsForms\obj\Release\GMap.NET.WindowsForms.dll

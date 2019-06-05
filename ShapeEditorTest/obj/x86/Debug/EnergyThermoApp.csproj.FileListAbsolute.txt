@@ -34,3 +34,9 @@ C:\Users\Игорь\Desktop\EnergyThermo\ShapeEditorTest\bin\Debug\System.Numeri
 C:\Users\Игорь\Desktop\EnergyThermo\ShapeEditorTest\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
 C:\Users\Игорь\Desktop\EnergyThermo\ShapeEditorTest\bin\Debug\System.Threading.Tasks.Extensions.xml
 C:\Users\Игорь\Desktop\EnergyThermo\ShapeEditorTest\bin\Debug\System.ValueTuple.xml
+C:\Users\Игорь\Desktop\EnergyThermo\ShapeEditorTest\bin\Debug\Xceed.Words.NET.dll
+C:\Users\Игорь\Desktop\EnergyThermo\ShapeEditorTest\bin\Debug\GMap.NET.Core.dll
+C:\Users\Игорь\Desktop\EnergyThermo\ShapeEditorTest\bin\Debug\GMap.NET.WindowsForms.dll
+C:\Users\Игорь\Desktop\EnergyThermo\ShapeEditorTest\obj\x86\Debug\ShapeEditorTest.Autorisation.resources
+C:\Users\Игорь\Desktop\EnergyThermo\ShapeEditorTest\obj\x86\Debug\ShapeEditorTest.Form2.resources
+C:\Users\Игорь\Desktop\EnergyThermo\ShapeEditorTest\obj\x86\Debug\EnergyThermoApp.csproj.ResolveComReference.cache

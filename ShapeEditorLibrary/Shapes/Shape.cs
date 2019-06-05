@@ -5,12 +5,14 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using System.Drawing.Design;
 using Npgsql;
 using System.Data;
 using System.Data.Common;
+
 
 
 namespace ShapeEditorLibrary.Shapes
@@ -26,25 +28,35 @@ namespace ShapeEditorLibrary.Shapes
         {
             string type_f = GetShapeTypeName();
             this.MinimumSize = new Size(10, 10);
-            if (type_f != "Pipeline")
-                this.Bounds = new Rectangle(location, this.DefaultSize);
-            else
+            if (type_f == "TK")
             {
-
                 this.Bounds = new Rectangle(location, new Size(40, 40));
+            }
+            else if (type_f == "Object")
+            {
+                this.Bounds = new Rectangle(location, new Size(90, 40));
+            }
+            else if (type_f == "Manometr")
+            {
+                this.Bounds = new Rectangle(location, new Size(42, 70));
+            }
+            else 
+            {
+                
+                this.Bounds = new Rectangle(location, this.DefaultSize);
             }
             this.BackColor = Color.White;
             this.Locked = false;
             this.FontField = new Font("Arial", 16);
             this.TextField = "Текст";
             this.m_LogicField = false;
-
+            /*
             if (type_f != "Text" || type_f != "Object")
             {
                 HiddenProp("FontField", false);
                 HiddenProp("TextField", false);
             }
-
+            */
         }
 
         #region Enums
@@ -106,7 +118,7 @@ namespace ShapeEditorLibrary.Shapes
         /// <summary>
         /// The Name of this Shape.
         /// </summary>
-        [DisplayName("Наименование")]
+        [DisplayName("1. Наименование")]
         public string Name
         {
             get { return _Name; }
@@ -118,6 +130,35 @@ namespace ShapeEditorLibrary.Shapes
             }
         }
 
+        Double _cof;
+        [Browsable(true)]
+        [Description("Коэффициент сопротивления")]
+        [DisplayName("Коэффициент сопротивления задвижки")]
+        public Double Cof
+        {
+            get { return _cof; }
+            set
+            {
+
+                _cof = value;
+                this.OnSizeChanged(EventArgs.Empty);
+            }
+        }
+
+        Double _pre;
+        [Browsable(true)]
+        [Description("Давление")]
+        [DisplayName("Давление в трубопроводе")]
+        public Double Pre
+        {
+            get { return _pre; }
+            set
+            {
+
+                _pre = value;
+                this.OnSizeChanged(EventArgs.Empty);
+            }
+        }
         String m_TextField;
         [Browsable(true)]
         [Description("Текстовое поле")]
@@ -136,12 +177,81 @@ namespace ShapeEditorLibrary.Shapes
         }
 
 
-
+     
         private DataSet ds = new DataSet();
         private DataTable dt = new DataTable();
-        private string _dvn;
-        private string myList;
+        public string _dvn;
+        public string _dy;
+        public string _thickness;
+        public string _weight;
+        public string _square_area;
+        public string _square_cross;
+        public string _material;
+        public string myList;
 
+        [Browsable(true)]
+        [DisplayName("Материал")]
+        [Description("Материал из которого изготовлена труба")]
+        [Category("Характеристика стальной трубы")]
+        public string material
+        {
+            get
+            {
+                return _material;
+            }
+
+        }
+
+        [Browsable(true)]
+        [DisplayName("Площадь пнаружной поверхности")]
+        [Description("Площадь пнаружной поверхности трубы 1 м в см2")]
+        [Category("Характеристика стальной трубы")]
+        public string square_area
+        {
+            get
+            {
+                return _square_area;
+            }
+
+        }
+
+        [Browsable(true)]
+        [DisplayName("Площадь поперечного сечения")]
+        [Description("Площадь поперечного сечения стенки трубы 1см2")]
+        [Category("Характеристика стальной трубы")]
+        public string square_cross
+        {
+            get
+            {
+                return _square_cross;
+            }
+
+        }
+
+        [Browsable(true)]
+        [DisplayName("Масса трубы")]
+        [Description("Масса трубы за 1 метр")]
+        [Category("Характеристика стальной трубы")]
+        public string weight
+        {
+            get
+            {
+                return _weight;
+            }
+
+        }
+
+        [Browsable(true)]
+        [DisplayName("Толщина стенки трубы")]
+        [Category("Характеристика стальной трубы")]
+        public string thickness
+        {
+            get
+            {
+                return _thickness;
+            }
+
+        }
         [Browsable(true)]
         [DisplayName("Диаметр трубопровода")]
         [Description("Условный диаметр трубопровода")]
@@ -162,13 +272,14 @@ namespace ShapeEditorLibrary.Shapes
                 try
                 {
                     List<string> myList = new List<string>();
+                    
                     // PostgeSQL-style connection string
                     string connstring = String.Format("Server = 127.0.0.1; Port = 5432; User Id = postgres; Password =; Database = energy_thermo; ");
                     // Making connection with Npgsql provider
                     NpgsqlConnection conn = new NpgsqlConnection(connstring);
                     conn.Open();
                     // quite complex sql statement
-                    string sql = "SELECT dvn from steel_tubes where dy = " + this.MyList;
+                    string sql = "SELECT dy, dvn, dn, thickness, weight,square_cross,square_area,material FROM steel_tubes WHERE dn = " + this.MyList;
                     // data adapter making request from our connection
                     NpgsqlDataAdapter da = new NpgsqlDataAdapter(sql, conn);
                     // i always reset DataSet before i do
@@ -182,7 +293,21 @@ namespace ShapeEditorLibrary.Shapes
 
                     
                     myList.Add(dt.Rows[0].Field<int>("dvn").ToString());
+                    myList.Add(dt.Rows[0].Field<int>("dy").ToString());
+                   myList.Add(dt.Rows[0].Field<double>("thickness").ToString());
+                   myList.Add(dt.Rows[0].Field<double>("weight").ToString());
+                    myList.Add(dt.Rows[0].Field<double>("square_area").ToString());
+                    myList.Add(dt.Rows[0].Field<double>("square_cross").ToString());
+                    myList.Add(dt.Rows[0].Field<string>("material"));
                     _dvn = myList[0];
+                    _dy = myList[1];
+                    _thickness = myList[2];
+                    _weight = myList[3];
+                    _square_area = myList[4];
+                    _square_cross = myList[5];
+                    _material = myList[5];
+
+
                 }
                 catch (Exception msg)
                 {
@@ -194,12 +319,47 @@ namespace ShapeEditorLibrary.Shapes
 
             }
         }
-
-
         
+
+        public string myList1;
         [Browsable(true)]
-        [DisplayName("Внутренний трубопровода")]
+        [DisplayName("Способ прокладки")]
+        [Description("Способ прокладки трубопровода")]
+        [TypeConverter(typeof(MethodConvertor))]
+        public string Method
+        {
+            get
+            {
+                return myList1;
+            }
+            set
+            {
+
+
+                myList1 = value;
+                this.OnSizeChanged(EventArgs.Empty);
+               
+                this.OnAppearanceChanged(EventArgs.Empty);
+
+            }
+        }
+        [Browsable(true)]
+        [DisplayName("Условный диаметр")]
         [Description("Условный диаметр трубопровода")]
+        [Category("Характеристика стальной трубы")]
+        public string Dy
+        {
+            get
+            {
+                return _dy;
+            }
+
+        }
+
+
+        [Browsable(true)]
+        [DisplayName("Внутренний диаметр")]
+        [Description("Внутренний диаметр трубопровода")]
         [Category("Характеристика стальной трубы")]
         public string Dvn
         {
@@ -246,11 +406,12 @@ namespace ShapeEditorLibrary.Shapes
             }
 
         }
-        
+
 
         /// <summary>
         /// The Location of this Shape.
         /// </summary>
+        [DisplayName("2. Расположение")]
         [XmlIgnore]        
         public Point Location
         {
@@ -277,22 +438,28 @@ namespace ShapeEditorLibrary.Shapes
             }
         }
 
-        int m_Distance;
-        [Browsable(true)]
-        [Description("Длина трубопровода")]
-        [DisplayName("Длина")]
-        public int Distance
+        public DateTime _d;
+        [Description("Год прокладки")]
+        [DisplayName("Год")]
+        public DateTime Dyear
         {
-            get { return m_Distance; }
+            get { return _d; }
             set
             {
-                string type_f = GetShapeTypeName();
-                if (type_f == "Pipeline")
-                {
 
-                }
-                this.OnSizeChanged(EventArgs.Empty);
+                _d.ToString("yyyy");
+                _d = value;
+
             }
+        }
+
+        public double m_Distance;
+        [Browsable(false)]
+        [Description("3. Длина трубопровода")]
+        [DisplayName("Длина")]
+        public double Distance
+        {
+            get { return m_Distance; }
         }
 
         /// <summary>
@@ -326,9 +493,10 @@ namespace ShapeEditorLibrary.Shapes
             set {
                 
                 m_LogicField = value;
+                
                 //MessageBox.Show(m_LogicField.ToString());
                 this.OnSizeChanged(EventArgs.Empty);
-
+                this.OnLocationChanged(EventArgs.Empty);
             }
         }
 
@@ -338,6 +506,7 @@ namespace ShapeEditorLibrary.Shapes
         /// <summary>
         /// Whether this Shape is locked (moving disabled) or not.
         /// </summary>
+        [DisplayName("Заблокировать")]
         public virtual bool Locked
         {
             get { return locked; }
@@ -432,6 +601,7 @@ namespace ShapeEditorLibrary.Shapes
 
         internal virtual void DrawGrabHandles(Graphics g, bool firstSelection)
         {
+            /*
             string type_f = GetShapeTypeName();
             if (type_f == "Text" || type_f == "Object")
             {
@@ -444,6 +614,7 @@ namespace ShapeEditorLibrary.Shapes
                 HiddenProp("FontField", false);
                 HiddenProp("TextField", false);
             }
+            */
             this.GrabHandles.Draw(g, firstSelection,this);
           
         }
@@ -522,15 +693,14 @@ namespace ShapeEditorLibrary.Shapes
             int newHeight = y - oldBounds.Top;
             string type_f = GetShapeTypeName();
             //MessageBox.Show(type_f);
-            if (newWidth < this.MinimumSize.Width && type_f!="Pipeline")
-            {                
+                         
                 newWidth = this.MinimumSize.Width;
                 newLeft = oldBounds.Right - newWidth;
-            }
-            if (newHeight < this.MinimumSize.Height && type_f != "Pipeline")
-            {
+            
+            
                 newHeight = this.MinimumSize.Height;
-            }
+            
+          
             this.Bounds = new Rectangle(newLeft, newTop, newWidth, newHeight);
         }
 
@@ -542,14 +712,15 @@ namespace ShapeEditorLibrary.Shapes
             int newWidth = x - newLeft;
             int newHeight = y - oldBounds.Top;
             string type_f = GetShapeTypeName();
-            if (newWidth < this.MinimumSize.Width && type_f != "Pipeline")
+            if (newWidth < this.MinimumSize.Width && type_f != "ObrPipeline" && type_f != "Pipeline" && type_f != "Vodoprovod")
             {
                 newWidth = this.MinimumSize.Width;
             }
-            if (newHeight < this.MinimumSize.Height && type_f != "Pipeline")
+            if (newHeight < this.MinimumSize.Height && type_f != "ObrPipeline" && type_f != "Pipeline" && type_f != "Vodoprovod")
             {
                 newHeight = this.MinimumSize.Height;
             }
+           
             this.Bounds = new Rectangle(newLeft, newTop, newWidth, newHeight);
         }
 
@@ -561,16 +732,17 @@ namespace ShapeEditorLibrary.Shapes
             int newWidth = oldBounds.Right - x;
             int newHeight = oldBounds.Bottom - y;
             string type_f = GetShapeTypeName();
-            if (newWidth < this.MinimumSize.Width && type_f != "Pipeline")
+            if (newWidth < this.MinimumSize.Width && type_f != "ObrPipeline" && type_f != "Pipeline" && type_f != "Vodoprovod")
             {
                 newWidth = this.MinimumSize.Width;
                 newLeft = oldBounds.Right - newWidth;
             }
-            if (newHeight < this.MinimumSize.Height && type_f != "Pipeline")
+            if (newHeight < this.MinimumSize.Height && type_f != "ObrPipeline" && type_f != "Pipeline" && type_f != "Vodoprovod")
             {
                 newHeight = this.MinimumSize.Height;
                 newTop = oldBounds.Bottom - newHeight;
             }
+           
             this.Bounds = new Rectangle(newLeft, newTop, newWidth, newHeight);
         }
 
@@ -582,15 +754,14 @@ namespace ShapeEditorLibrary.Shapes
             int newWidth = x - newLeft;
             int newHeight = oldBounds.Bottom - y;
             string type_f = GetShapeTypeName();
-            if (newWidth < this.MinimumSize.Width && type_f != "Pipeline")
-            {
+            
                 newWidth = this.MinimumSize.Width;
-            }
-            if (newHeight < this.MinimumSize.Height && type_f != "Pipeline")
-            {
+            
+            
                 newHeight = this.MinimumSize.Height;
                 newTop = oldBounds.Bottom - newHeight;
-            }
+            
+            
             this.Bounds = new Rectangle(newLeft, newTop, newWidth, newHeight);
         }
 
@@ -678,7 +849,7 @@ namespace ShapeEditorLibrary.Shapes
         {
             
             string type_f = GetShapeTypeName();
-            if (this.GrabHandles.TotalBounds.Contains(location)&& type_f != "Pipeline" && type_f != "TK" && type_f !="Text" && type_f != "TriangleShape" && type_f != "CircleShape" && type_f != "Compensator" && type_f != "DistanseDiametr")
+            if (this.GrabHandles.TotalBounds.Contains(location) && type_f != "Pipeline" && type_f != "Manometr" && type_f != "ObrPipeline" && type_f != "TK" && type_f !="Text" && type_f != "TriangleShape" && type_f != "CircleShape" && type_f != "Compensator" && type_f != "DistanseDiametr" && type_f != "Vodoprovod")
             {
                 
                 // Diagonal resizing (has precedence over normal resizing)
@@ -715,6 +886,28 @@ namespace ShapeEditorLibrary.Shapes
                 // If all else fails: drag
                 return HitStatus.Drag;
             }
+            else if (this.GrabHandles.TotalBounds.Contains(location) && type_f == "ObrPipeline")
+            {
+                // Diagonal resizing (has precedence over normal resizing)
+                if (this.GrabHandles.TopLeft.Contains(location))
+                    return HitStatus.ResizeTopLeft;
+                else if (this.GrabHandles.BottomRight.Contains(location))
+                    return HitStatus.ResizeBottomRight;
+
+                // If all else fails: drag
+                return HitStatus.Drag;
+            }
+            else if (this.GrabHandles.TotalBounds.Contains(location) && type_f == "Vodoprovod")
+            {
+                // Diagonal resizing (has precedence over normal resizing)
+                if (this.GrabHandles.TopLeft.Contains(location))
+                    return HitStatus.ResizeTopLeft;
+                else if (this.GrabHandles.BottomRight.Contains(location))
+                    return HitStatus.ResizeBottomRight;
+
+                // If all else fails: drag
+                return HitStatus.Drag;
+            }
             else if (this.GrabHandles.TotalBounds.Contains(location) && type_f == "Text")
             {
                 //MessageBox.Show(this.FontField.Height.ToString() + "  " + this.FontField.Size.ToString());
@@ -726,6 +919,11 @@ namespace ShapeEditorLibrary.Shapes
                 return HitStatus.Drag;
             }
             else if (this.GrabHandles.TotalBounds.Contains(location) && type_f == "CircleShape")
+            {
+                //MessageBox.Show(this.FontField.Height.ToString() + "  " + this.FontField.Size.ToString());
+                return HitStatus.Drag;
+            }
+            else if (this.GrabHandles.TotalBounds.Contains(location) && type_f == "Manometr")
             {
                 //MessageBox.Show(this.FontField.Height.ToString() + "  " + this.FontField.Size.ToString());
                 return HitStatus.Drag;

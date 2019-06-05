@@ -94,8 +94,12 @@
     <Compile Include="ShapesComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Shapes\DataConverter.cs" />
     <Compile Include="Shapes\DiametrTypeConverter.cs" />
     <Compile Include="Shapes\DistanseDiametr.cs" />
+    <Compile Include="Shapes\Manometr.cs" />
+    <Compile Include="Shapes\MethodConvertor.cs" />
+    <Compile Include="Shapes\ObrPipeline.cs" />
     <Compile Include="Shapes\Pipeline.cs" />
     <Compile Include="Shapes\GrabHandles.cs" />
     <Compile Include="Shapes\EllipseShape.cs" />
@@ -103,6 +107,7 @@
     <Compile Include="Shapes\Shape.cs" />
     <Compile Include="Shapes\ShapeCollection.cs" />
     <Compile Include="Shapes\Text.cs" />
+    <Compile Include="Shapes\Vodoprovod.cs" />
     <Compile Include="Shapes\xmlConvert.cs" />
     <Compile Include="Shapes\TK.cs" />
     <Compile Include="Shapes\TriangleShape.cs" />
@@ -121,6 +126,14 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Resources\Image1.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Bitmap1.bmp" />
+    <Content Include="Resources\Bitmap2.bmp" />
+    <Content Include="Resources\Bitmap3.bmp" />
+    <Content Include="Resources\Bitmap4.bmp" />
+    <None Include="Resources\Снимок5.png" />
+    <None Include="Resources\Снимок5.JPG" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

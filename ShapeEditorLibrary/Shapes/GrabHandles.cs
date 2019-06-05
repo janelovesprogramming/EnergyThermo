@@ -137,6 +137,7 @@ namespace ShapeEditorLibrary.Shapes
         internal void SetBounds(Rectangle shapeBounds, Shape parentShape)
         {
             
+            
                 this.BorderBounds = new Rectangle(shapeBounds.X - this.BorderWidth,
                                                shapeBounds.Y - this.BorderWidth,
                                                shapeBounds.Width + 2 * this.BorderWidth,
@@ -147,9 +148,12 @@ namespace ShapeEditorLibrary.Shapes
 
         internal void Draw(Graphics g, bool firstSelection, Shape parentShape)
         {
-            if (parentShape.GetShapeTypeName() != "Pipeline" && parentShape.GetShapeTypeName() != "DistanseDiametr")
+            if (parentShape.GetShapeTypeName() == "TK" || parentShape.GetShapeTypeName() == "Compensator" || parentShape.GetShapeTypeName() == "Manometr")
+            {
                 ControlPaint.DrawBorder(g, this.BorderBounds, ControlPaint.ContrastControlDark, ButtonBorderStyle.Dotted);
-            
+                //MessageBox.Show(parentShape.GetShapeTypeName());
+            }
+           
 
             if (this.Locked)
             {
@@ -159,7 +163,7 @@ namespace ShapeEditorLibrary.Shapes
             {
                
 
-                if(parentShape.GetShapeTypeName() == "Pipeline")
+                if(parentShape.GetShapeTypeName() == "Pipeline" || parentShape.GetShapeTypeName() == "ObrPipeline" || parentShape.GetShapeTypeName() == "Vodoprovod")
                 {
                     
                     this.DrawGrabHandle(g, this.TopLeft, firstSelection);

@@ -1,0 +1,12 @@
+C:\Users\Игорь\Desktop\greatmaps\Build\Release-NETv4.0\Demo.WindowsForms.exe.config
+C:\Users\Игорь\Desktop\greatmaps\Build\Release-NETv4.0\Demo.WindowsForms.exe
+C:\Users\Игорь\Desktop\greatmaps\Demo.WindowsForms\obj\Release\Demo.WindowsForms.csprojResolveAssemblyReference.cache
+C:\Users\Игорь\Desktop\greatmaps\Demo.WindowsForms\obj\Release\BSE.Windows.Forms.Panel.resources
+C:\Users\Игорь\Desktop\greatmaps\Demo.WindowsForms\obj\Release\BSE.Windows.Forms.XPanderPanel.resources
+C:\Users\Игорь\Desktop\greatmaps\Demo.WindowsForms\obj\Release\BSE.Windows.Forms.XPanderPanelList.resources
+C:\Users\Игорь\Desktop\greatmaps\Demo.WindowsForms\obj\Release\Demo.WindowsForms.MainForm.resources
+C:\Users\Игорь\Desktop\greatmaps\Demo.WindowsForms\obj\Release\Demo.WindowsForms.Forms.Message.resources
+C:\Users\Игорь\Desktop\greatmaps\Demo.WindowsForms\obj\Release\Demo.WindowsForms.StaticImage.resources
+C:\Users\Игорь\Desktop\greatmaps\Demo.WindowsForms\obj\Release\Demo.WindowsForms.Properties.Resources.resources
+C:\Users\Игорь\Desktop\greatmaps\Demo.WindowsForms\obj\Release\Demo.WindowsForms.csproj.GenerateResource.Cache
+C:\Users\Игорь\Desktop\greatmaps\Demo.WindowsForms\obj\Release\Demo.WindowsForms.exe

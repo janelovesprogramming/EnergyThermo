@@ -9,8 +9,13 @@ using System.Windows.Forms;
 using ShapeEditorLibrary.Shapes;
 using ShapeEditorLibrary;
 using Npgsql;
-
+using Xceed.Words.NET;
 using System.Data.Common;
+using GMap.NET;
+using GMap.NET.WindowsForms;
+using GMap.NET.WindowsForms.Markers;
+using GMap.NET.WindowsForms.ToolTips;
+
 
 
 namespace ShapeEditorTest
@@ -20,6 +25,10 @@ namespace ShapeEditorTest
         public Form1()
         {
             InitializeComponent();
+            splitContainer1.Panel1.Controls.Add(gMapControl1);
+            gMapControl1.Controls.Add(canvas1);
+            SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+            canvas1.BackColor = Color.Transparent;
         }
 
         private void AddShape(Shape s)
@@ -72,6 +81,8 @@ namespace ShapeEditorTest
         }
         private DataSet ds = new DataSet();
         private DataTable dt = new DataTable();
+      
+        
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
             //this.AddShape(new Pipeline(Point.Empty));
@@ -81,7 +92,13 @@ namespace ShapeEditorTest
             this.AddShape(dis);
             this.AddShape(pip);
 
-          
+            
+
+            pip.MyList = 108.ToString();
+
+            canvas1.SendToBack(pip);
+
+
 
 
 
@@ -166,11 +183,7 @@ namespace ShapeEditorTest
         }
 
         
-        private void сеткаToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Graphics g = canvas1.CreateGraphics();
-            canvas1.PaintPoint(g);
-        }
+        
 
        
 
@@ -186,6 +199,12 @@ namespace ShapeEditorTest
             List<Shape> s = canvas1.GetShapes();
             DataSet ds = new DataSet("Scheme");
             DataTable dt = new DataTable("Pipeline");
+            DataTable dt_obr = new DataTable("ObrPipeline");
+            DataTable dt_vod = new DataTable("Vodoprovod");
+            DataTable dt_tk = new DataTable("TK");
+            DataTable dt_zadvizhka = new DataTable("Z");
+            DataTable dt_text = new DataTable("Text");
+            DataTable dt_obj= new DataTable("Obj");
             ds.Tables.Add(dt);
 
             DataRow Row;
@@ -237,6 +256,42 @@ namespace ShapeEditorTest
 
             dt.Columns.Add(column);
 
+            column = new DataColumn();
+            column.DataType = System.Type.GetType("System.String");
+            column.ColumnName = "Method";
+            column.AutoIncrement = false;
+            column.ReadOnly = false;
+            column.Unique = false;
+
+            dt.Columns.Add(column);
+
+            column = new DataColumn();
+            column.DataType = System.Type.GetType("System.DateTime");
+            column.ColumnName = "DYear";
+            column.AutoIncrement = false;
+            column.ReadOnly = false;
+            column.Unique = false;
+
+            dt.Columns.Add(column);
+
+            column = new DataColumn();
+            column.DataType = System.Type.GetType("System.Boolean");
+            column.ColumnName = "Show";
+            column.AutoIncrement = false;
+            column.ReadOnly = false;
+            column.Unique = false;
+
+            dt.Columns.Add(column);
+
+            column = new DataColumn();
+            column.DataType = System.Type.GetType("System.String");
+            column.ColumnName = "Dn";
+            column.AutoIncrement = false;
+            column.ReadOnly = false;
+            column.Unique = false;
+
+            dt.Columns.Add(column);
+
 
             for (int i = 0; i < s.Count; i++)
             {
@@ -250,7 +305,10 @@ namespace ShapeEditorTest
                     Row["LocationY"] = s[i].Location.Y;
                     Row["SizeW"] = s[i].Size.Width;
                     Row["SizeH"] = s[i].Size.Height;
-
+                    Row["Show"] = s[i].LogicField;
+                    Row["DYear"] = s[i].Dyear;
+                    Row["Method"] = s[i].Method;
+                    Row["Dn"] = s[i].MyList;
                     dt.Rows.Add(Row);
 
                 }
@@ -294,17 +352,179 @@ namespace ShapeEditorTest
                 Size siz = new Size(Convert.ToInt32(rows[i]["SizeW"]), Convert.ToInt32(rows[i]["SizeH"]));
 
                 Pipeline pip = new Pipeline(p);
+                
                 pip.Name = rows[i]["Name"].ToString();
                 
                 pip.Location = p;
                 pip.Size = siz;
+                pip.LogicField = Convert.ToBoolean(rows[i]["Show"]);
+                if(pip.LogicField == true)
+                {
+                    Shape dis = new DistanseDiametr(Point.Empty, pip);
+                    this.AddShape(dis);
+                }
+                pip.Method = rows[i]["Method"].ToString();
+                pip.Dyear = Convert.ToDateTime(rows[i]["DYear"]);
+                pip.MyList = rows[i]["Dn"].ToString();
+                
                 s.Add(pip);
                 canvas1.Shapes.Add(s[i]);
-
+                
             }
             
             
             MessageBox.Show("Файл открыт");
         }
+
+        private void добавитьГидравлическоеКольцоToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void toolStripButton4_Click(object sender, EventArgs e)
+        {
+            //this.AddShape(new Pipeline(Point.Empty));
+            Point p = new Point(100, 100);
+            Shape pip = new ObrPipeline(p);
+            Shape dis = new DistanseDiametr(p, pip);
+
+            this.AddShape(dis);
+            this.AddShape(pip);
+
+            pip.MyList = 108.ToString();
+            canvas1.SendToBack(pip);
+        }
+
+        private void toolStripButton5_Click(object sender, EventArgs e)
+        {
+            //this.AddShape(new Pipeline(Point.Empty));
+            Shape pip = new Vodoprovod(Point.Empty);
+            Shape dis = new DistanseDiametr(Point.Empty, pip);
+
+            this.AddShape(dis);
+            this.AddShape(pip);
+
+            pip.MyList = 108.ToString();
+            canvas1.SendToBack(pip);
+
+        }
+
+        private void toolStripButton6_Click(object sender, EventArgs e)
+        {
+            this.AddShape(new Manometr(Point.Empty));
+        }
+
+        private void вWordToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+           
+            /*  int width = canvas1.Size.Width;
+              int height = canvas1.Size.Height;
+
+              Bitmap bm = new Bitmap(width, height);
+              canvas1.DrawToBitmap(bm, new Rectangle(0, 0, width, height));
+           bm.Save("C:\\Users\\Игорь\\Desktop\\www.png", System.Drawing.Imaging.ImageFormat.Jpeg);
+
+
+          // путь к документу
+          string pathDocument = "C:\\Users\\Игорь\\Desktop\\www.docx";
+
+          // создаём документ
+          DocX document = DocX.Load(pathDocument);
+          Xceed.Words.NET.Image image = document.AddImage("C:\\Users\\Игорь\\Desktop\\www.png");
+          // вставляем параграф и передаём текст
+          document.InsertParagraph("Описание схемы тепловой сети").
+                   // устанавливаем шрифт
+                   Font("Times New Roman").
+                   // устанавливаем размер шрифта
+                   FontSize(14).
+                   // устанавливаем цвет
+                   Color(Color.Black).
+                   // делаем текст жирным
+                   Bold().                    
+                   // выравниваем текст по центру
+                   Alignment = Alignment.center;
+
+          Paragraph paragraph = document.InsertParagraph();
+          // вставка изображения в параграф
+          paragraph.AppendPicture(image.CreatePicture());
+          // выравнивание параграфа по центру
+          paragraph.Alignment = Alignment.center;
+
+          document.Save();*/
+        }
+
+        private void скрытьСхемуToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            canvas1.Visible = false;
+            gMapControl1.Visible = true;
+        }
+
+        private void показатьСхемуToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            canvas1.Visible = true;
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+            gMapControl1.Bearing = 45;
+
+            gMapControl1.CanDragMap = true;
+
+            gMapControl1.DragButton = MouseButtons.Left;
+
+            gMapControl1.GrayScaleMode = true;
+
+            gMapControl1.MarkersEnabled = true;
+
+            gMapControl1.MaxZoom = 18;
+
+            gMapControl1.MinZoom = 2;
+
+            gMapControl1.MouseWheelZoomType = MouseWheelZoomType.MousePositionWithoutCenter;
+
+            gMapControl1.NegativeMode = false;
+
+            gMapControl1.PolygonsEnabled = true;
+
+            gMapControl1.RoutesEnabled = true;
+
+            gMapControl1.ShowTileGridLines = false;
+
+            gMapControl1.Zoom = 10;
+            gMapControl1.ShowCenter = false;
+            gMapControl1.MapProvider = GMap.NET.MapProviders.GMapProviders.GoogleMap;
+
+            GMap.NET.GMaps.Instance.Mode = AccessMode.ServerOnly;
+
+            gMapControl1.Position = new PointLatLng(57.1425322914133, 65.5206906795502);
+            gMapControl1.Visible = false;
+        }
+
+        public bool CanvasProp
+        {
+            get { return gMapControl1.Visible; }
+            set { gMapControl1.Visible = value; }
+        }
+        public static Form2 CreateForm2()
+        {
+            foreach (Form frm in Application.OpenForms)
+                if (frm is Form2)
+                {
+                    frm.Activate();
+                    return frm as Form2;
+                }
+            Form2 form = new Form2();
+            form.Show();
+            return form;
+        }
+        private void создатьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CreateForm2();
+            Form2 f2 = new Form2();
+            f2.Hide();
+        }
     }
-    }
+
+}
+    

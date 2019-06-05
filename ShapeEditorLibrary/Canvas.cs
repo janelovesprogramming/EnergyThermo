@@ -21,9 +21,9 @@ namespace ShapeEditorLibrary
             this.SetShapes(new ShapeCollection(this));
             base.DoubleBuffered = true;
 
-            this.ShapeAlignDistance = 15;
-            this.BorderSnapDistance = 25;
-            this.ShapeSnapDistance = 15;
+            this.ShapeAlignDistance = 5;
+            this.BorderSnapDistance = 5;
+            this.ShapeSnapDistance = 0;
 
             this.SnapMode = SnapModes.SnapLines;
         }
@@ -161,6 +161,7 @@ namespace ShapeEditorLibrary
         */
         public void SetSelection(Shape shape)
         {
+            
             if (shape == null)
             {
                 _SelectedShapes = new List<Shape>();
@@ -171,8 +172,141 @@ namespace ShapeEditorLibrary
             if (this.SelectedShapes == null) _SelectedShapes = new List<Shape>();
             if (this.SelectedShapes.Contains(shape))
             {
+                
+                string type_f = shape.GetShapeTypeName();
                 this.SelectedShapes.Remove(shape);
                 this.SelectedShapes.Insert(0, shape);
+                if (type_f == "Text")
+                {
+                    shape.HiddenProp("Cof", false);
+                    shape.HiddenProp("FontField", true);
+                    shape.HiddenProp("TextField", true);
+                    shape.HiddenProp("MyList", false);
+                    shape.HiddenProp("Dvn", false);
+                  //  shape.HiddenProp("Distance", false);
+                    shape.HiddenProp("LogicField", false);
+
+                    shape.HiddenProp("Dy", false);
+                    //shape.HiddenProp("Dn", false);
+                    shape.HiddenProp("Pre", false);
+                    shape.HiddenProp("weight", false);
+                    shape.HiddenProp("thickness", false);
+                    shape.HiddenProp("square_area", false);
+                    shape.HiddenProp("square_cross", false);
+                    shape.HiddenProp("material", false);
+
+                }
+                else if (type_f == "Compensator")
+                {
+                    shape.HiddenProp("Cof", true);
+
+                    //shape.HiddenProp("Distance", false);
+                    shape.HiddenProp("LogicField", false);
+                    shape.HiddenProp("FontField", false);
+                    shape.HiddenProp("TextField", false);
+                    shape.HiddenProp("MyList", false);
+                    shape.HiddenProp("Dvn", false);
+
+
+                    shape.HiddenProp("Dy", false);
+                    //shape.HiddenProp("Dn", false);
+                    shape.HiddenProp("thickness", false);
+                    shape.HiddenProp("weight", false);
+                    shape.HiddenProp("Pre", false);
+                    shape.HiddenProp("square_area", false);
+                    shape.HiddenProp("square_cross", false);
+                    shape.HiddenProp("material", false);
+                    shape.HiddenProp("Method", false);
+                }
+                else if (type_f == "Manometr")
+                {
+                    
+                    shape.HiddenProp("Cof", false);
+                    shape.HiddenProp("Pre", true);
+                    shape.HiddenProp("Name", true);
+                    shape.HiddenProp("Location", true);
+
+                    //shape.HiddenProp("Distance", false);
+                    shape.HiddenProp("LogicField", false);
+                    shape.HiddenProp("FontField", false);
+                    shape.HiddenProp("TextField", false);
+                    shape.HiddenProp("MyList", false);
+                    shape.HiddenProp("Dvn", false);
+
+
+                    shape.HiddenProp("Dy", false);
+                    //shape.HiddenProp("Dn", false);
+                    shape.HiddenProp("thickness", false);
+                    shape.HiddenProp("weight", false);
+
+                    shape.HiddenProp("square_area", false);
+                    shape.HiddenProp("square_cross", false);
+                    shape.HiddenProp("material", false);
+                    shape.HiddenProp("Method", false);
+                }
+                else if(type_f == "Object")
+                {
+                    shape.HiddenProp("Cof", false);
+                    shape.HiddenProp("TextField", true);
+                    shape.HiddenProp("FontField", false);
+                    shape.HiddenProp("MyList", false);
+                    shape.HiddenProp("Dvn", false);
+                   // shape.HiddenProp("Distance", false);
+                    shape.HiddenProp("LogicField", false);
+                    shape.HiddenProp("Pre", false);
+                    shape.HiddenProp("Dy", false);
+                    //shape.HiddenProp("Dn", false);
+                  
+                    shape.HiddenProp("weight", false);
+                    shape.HiddenProp("thickness", false);
+                    shape.HiddenProp("square_area", false);
+                    shape.HiddenProp("square_cross", false);
+                    shape.HiddenProp("material", false);
+                    shape.HiddenProp("Method", false);
+                }
+                else if(type_f == "Pipeline" || type_f == "ObrPipeline" || type_f == "Vodoprovod")
+                {
+                    shape.HiddenProp("Cof", false);
+                    shape.HiddenProp("FontField", false);
+                    shape.HiddenProp("TextField", false);
+                    shape.HiddenProp("MyList", true);
+                    shape.HiddenProp("Dvn", true);
+                   // shape.HiddenProp("Distance", true);
+                    shape.HiddenProp("LogicField", true);
+                    shape.HiddenProp("Method", true);
+                    shape.HiddenProp("Dy", true);
+                   //shape.HiddenProp("Dn", true);
+                    shape.HiddenProp("thickness", true);
+                    shape.HiddenProp("weight", true);
+                    shape.HiddenProp("Pre", false);
+                    shape.HiddenProp("square_area", true);
+                    shape.HiddenProp("square_cross", true);
+                    shape.HiddenProp("material", true);
+                    shape.HiddenProp("Dyear", true);
+
+                }
+                else
+                {
+                    shape.HiddenProp("Method", false);
+                    shape.HiddenProp("Pre", false);
+                    shape.HiddenProp("Cof", false);
+                    //shape.HiddenProp("Distance", false);
+                    shape.HiddenProp("LogicField", false);
+                    shape.HiddenProp("FontField", false);
+                    shape.HiddenProp("TextField", false);
+                    shape.HiddenProp("MyList", false);
+                    shape.HiddenProp("Dvn", false);
+
+                    shape.HiddenProp("Dyear", false);
+                    shape.HiddenProp("Dy", false);
+                    //shape.HiddenProp("Dn", false);
+                    shape.HiddenProp("thickness", false);
+                    shape.HiddenProp("weight", false);
+                
+                    shape.HiddenProp("square_area", false);
+                    shape.HiddenProp("square_cross", false);
+                    shape.HiddenProp("material", false);
+                }
                
             }
             else
@@ -180,7 +314,7 @@ namespace ShapeEditorLibrary
                 _SelectedShapes = new List<Shape>();
                 this.SelectedShapes.Add(shape);
             }
-
+            
             this.OnSelectedShapeChanged(EventArgs.Empty);
             this.Invalidate();
         }
@@ -270,10 +404,12 @@ namespace ShapeEditorLibrary
             foreach (var s in this.Shapes)
             {
                 s.Draw(e.Graphics);
-                if(s.GetShapeTypeName() == "TK" || s.GetShapeTypeName() == "Object" || s.GetShapeTypeName() == "Pipeline")
+                if(s.GetShapeTypeName() == "TK" || s.GetShapeTypeName() == "Object" || s.GetShapeTypeName() == "Vodoprovod" || s.GetShapeTypeName() == "Pipeline" || s.GetShapeTypeName() == "ObrPipeline")
                     s.DrawText(e.Graphics);
-                if(flag)
+                if (flag && s.Name == name_figure)
+                {
                     s.DrawText(e.Graphics);
+                }
 
             }
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
@@ -310,20 +446,27 @@ namespace ShapeEditorLibrary
                 }
             }
         }
+        
         #region SnapLines
 
         private void SnapShape(Shape movingShape)
         {
-            if (isSnapping) return;
-
-            snapLines = new List<SnapLine>();
-            foreach (var fixedShape in this.Shapes.Where(s => s != movingShape && !this.SelectedShapes.Contains(s)))
+            string type_f = movingShape.GetShapeTypeName();
+            if (type_f != "Compensator" && type_f != "TK" && type_f != "Manometr")
             {
-                this.AlignShapes(movingShape, fixedShape);
-                this.SnapShapes(movingShape, fixedShape);
+                if (isSnapping) return;
+
+                snapLines = new List<SnapLine>();
+                foreach (var fixedShape in this.Shapes.Where(s => s != movingShape && !this.SelectedShapes.Contains(s)))
+                {
+                    this.AlignShapes(movingShape, fixedShape);
+                    this.SnapShapes(movingShape, fixedShape);
+                }
+            
+                this.SnapCanvas(movingShape);
             }
-            this.SnapCanvas(movingShape);
             this.Invalidate();
+            
         }
 
         private void AlignShapes(Shape movingShape, Shape fixedShape)
@@ -555,7 +698,7 @@ namespace ShapeEditorLibrary
         }
 
         #endregion
-
+        
         #region Shape Events
 
         internal void RegisterShapeEvents(Shape s)
@@ -569,7 +712,7 @@ namespace ShapeEditorLibrary
             s.LocationChanged -= Shape_LocationChanged;
             s.SizeChanged -= Shape_SizeChanged;
         }
-
+        
         internal void Shape_LocationChanged(object sender, EventArgs e)
         {
             var shape = (Shape) sender;
@@ -585,7 +728,7 @@ namespace ShapeEditorLibrary
         }
 
         #endregion
-
+        
       
         #region Mouse Events
 
@@ -654,6 +797,7 @@ namespace ShapeEditorLibrary
             this.Invalidate();
         }
         bool flag;
+        string name_figure;
         protected override void OnMouseMove(MouseEventArgs e)
         {
             flag = false;
@@ -691,15 +835,16 @@ namespace ShapeEditorLibrary
                         }
                         Point p = new Point(e.X, e.Y);
                         List<Shape> s = GetShapesAtPoint(p);
-                        if (this.SelectedShape.GetShapeTypeName() == "Compensator")
+                        if (this.SelectedShape.GetShapeTypeName() == "Compensator" || this.SelectedShape.GetShapeTypeName() == "TK" || this.SelectedShape.GetShapeTypeName() == "Manometr")
                         {
                             if (s.Count > 1)
                             {
                                 for (int i = 0; i < s.Count; i++)
                                 {
-                                    if (s[i].GetShapeTypeName() == "Pipeline")
+                                    if (s[i].GetShapeTypeName() == "Pipeline" || s[i].GetShapeTypeName() == "ObrPipeline" || s[i].GetShapeTypeName() == "Vodoprovod")
                                     {
                                         flag = true;
+                                        name_figure = this.SelectedShape.Name;
                                         break;
                                     }
                                 }

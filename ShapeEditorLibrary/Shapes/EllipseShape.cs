@@ -41,7 +41,7 @@ namespace ShapeEditorLibrary.Shapes
 
 
                 // Draw text to screen
-                g.DrawString(drawString, drawFont, drawBrush, this.Bounds.X+50, this.Bounds.Y);
+                g.DrawString(drawString, drawFont, drawBrush, this.Bounds.X+50, this.Bounds.Y-20);
 
             }
         }

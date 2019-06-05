@@ -1,0 +1,5 @@
+C:\Users\Игорь\Desktop\greatmaps\GMap.NET.Core\bin\Release\GMap.NET.Core.dll
+C:\Users\Игорь\Desktop\greatmaps\GMap.NET.Core\obj\Release\GMap.NET.Core.csprojResolveAssemblyReference.cache
+C:\Users\Игорь\Desktop\greatmaps\GMap.NET.Core\obj\Release\GMap.NET.Properties.Resources.resources
+C:\Users\Игорь\Desktop\greatmaps\GMap.NET.Core\obj\Release\GMap.NET.Core.csproj.GenerateResource.Cache
+C:\Users\Игорь\Desktop\greatmaps\GMap.NET.Core\obj\Release\GMap.NET.Core.dll

@@ -33,7 +33,7 @@ namespace ShapeEditorLibrary.Shapes
                 String drawString = this.TextField;
 
                 // Create font and brush.
-                Font drawFont = this.FontField;
+                Font drawFont = new Font("Arial",10);
                 SolidBrush drawBrush = new SolidBrush(Color.Black);
 
 
